@@ -1,0 +1,3 @@
+web: unset PORT && bin/rails server
+js: npx esbuild app/javascript/application.tsx --bundle --loader:.tsx=tsx --loader:.ts=ts --sourcemap --target=es2017 --outdir=app/assets/builds --watch
+css: yarn build:css --watch
