@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
+  devise_for :managers, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   devise_for :users, skip: [:sessions, :registrations]
   devise_scope :user do
     get 'login', to: 'users/sessions#new', as: :new_user_session, defaults: { format: :html }
     post 'login', to: 'users/sessions#create', as: :user_session, defaults: { format: :json }
-    delete 'logout', to: 'users/sessions#destroy', as: :destroy_user_session, defaults: { format: :json }
+    get 'logout', to: 'users/sessions#destroy', as: :destroy_user_session, defaults: { format: :json }
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

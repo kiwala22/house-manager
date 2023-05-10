@@ -77,3 +77,10 @@ end
 
 # customary gems
 gem 'devise'
+gem 'activeadmin'
+
+# Plus integrations with:
+gem 'cancancan'
+gem 'draper'
+gem 'pundit'
+gem 'sassc', '~> 2.4'
