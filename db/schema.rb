@@ -44,27 +44,33 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_17_202254) do
     t.integer "amount"
     t.bigint "property_id", null: false
     t.bigint "tenant_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["property_id"], name: "index_payments_on_property_id"
     t.index ["tenant_id"], name: "index_payments_on_tenant_id"
+    t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
   create_table "properties", force: :cascade do |t|
-    t.string "branch", default: "", null: false
+    t.integer "branch", default: 1, null: false
     t.integer "price"
     t.integer "status", default: 1, null: false
     t.string "room_number"
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_properties_on_user_id"
   end
 
   create_table "tenants", force: :cascade do |t|
     t.string "name"
     t.string "phone_number"
     t.string "nin_number"
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_tenants_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -83,4 +89,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_17_202254) do
 
   add_foreign_key "payments", "properties"
   add_foreign_key "payments", "tenants"
+  add_foreign_key "payments", "users"
+  add_foreign_key "properties", "users"
+  add_foreign_key "tenants", "users"
 end

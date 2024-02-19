@@ -1,5 +1,6 @@
-ActiveAdmin.register User do
+# frozen_string_literal: true
 
+ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :username
 
   index do

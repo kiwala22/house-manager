@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Manager do
   permit_params :email, :password, :password_confirmation
 
@@ -24,5 +26,4 @@ ActiveAdmin.register Manager do
     end
     f.actions
   end
-
 end
