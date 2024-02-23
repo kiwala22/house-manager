@@ -4,7 +4,6 @@ class PaymentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_payment, only: %i[show edit update destroy]
   before_action :set_property, only: %i[new create]
-  before_action :set_tenant, only: %i[new create]
 
   # GET /payments or /payments.json
   def index
@@ -24,9 +23,7 @@ class PaymentsController < ApplicationController
 
   # POST /payments or /payments.json
   def create
-    @payment = Payment.new(payment_params.merge(user_id: current_user.id))
-    @payment.property = @property
-    @payment.tenant = @tenant
+    @payment = @property.payments.new(payment_params.merge(user_id: current_user.id))
 
     respond_to do |format|
       if @payment.save
@@ -69,16 +66,12 @@ class PaymentsController < ApplicationController
     @property = Property.find(params[:property_id])
   end
 
-  def set_tenant
-    @tenant = Tenant.find(params[:tenant_id])
-  end
-
   def set_payment
     @payment = Payment.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
   def payment_params
-    params.require(:payment).permit(:amount, :user_id, :tenant_id, :property_id)
+    params.require(:payment).permit(:amount, :phone_number, :tenant_name, :nin_number, :date_range)
   end
 end

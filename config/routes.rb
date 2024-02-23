@@ -16,7 +16,6 @@ Rails.application.routes.draw do
   root "home#index"
 
   resources :properties
-  resources :tenants
   resources :payments
 
   # unmatched routes for the FE
