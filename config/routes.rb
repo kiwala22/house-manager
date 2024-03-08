@@ -15,8 +15,11 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
-  resources :properties
-  resources :payments
+  scope '/', defaults: { format: :json } do
+    resources :properties do
+      resources :payments, shallow:true
+    end
+  end
 
   # unmatched routes for the FE
   get "*unmatched", to: "home#index"

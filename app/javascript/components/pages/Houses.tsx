@@ -4,13 +4,13 @@ export const Houses = () => {
   return (
     <div className="py-4 px-6 bg-slate-50 border border-gray-200 rounded-lg shadow dark:border-gray-700">
       <div className="relative overflow-x-auto">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400  border-gray-200 md:table-fixed border-separate">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400  border-gray-200 table-fixed border-separate">
           <thead className="text-xs text-gray-700 uppercase  dark:text-gray-400">
             <tr className="border-b">
-              <th className="px-6 py-3">
+              <th colSpan={3} className="py-3">
                 Room type
               </th>
-              <th className="px-6 py-3">
+              <th colSpan={2} className="py-3">
                 Filter by
               </th>
             </tr>
@@ -18,53 +18,53 @@ export const Houses = () => {
           <tbody>
             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <td className="px-6 py-4 border border-slate-200">
-                Blacket
+                DX 102
               </td>
               <td className="px-6 py-4 border border-slate-200">
-                Silver
+                DX 102
               </td>
               <td className="px-6 py-4 border border-slate-200">
-                Laptop
+                DX 102
               </td>
               <td className="px-6 py-4 border border-slate-200">
-                $2999
+                DX 102
               </td>
               <td className="px-6 py-4 border border-slate-200">
-                $1999
+                DX 102
               </td>
             </tr>
             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <td className="px-6 py-4 border border-slate-200" >
-                Microsoft Surface Pro
+                DX 102
               </td>
               <td className="px-6 py-4 border border-slate-200">
-                White
+                DX 102
               </td>
               <td className="px-6 py-4 border border-slate-200">
-                Laptop PC
+                DX 102
               </td>
               <td className="px-6 py-4 border border-slate-200">
-                $1999
+                DX 102
               </td>
               <td className="px-6 py-4 border border-slate-200">
-                $1999
+                DX 102
               </td>
             </tr>
             <tr className="bg-white dark:bg-gray-800">
               <td className="px-6 py-4 border border-slate-200">
-                Black
+                DX 102
               </td>
               <td className="px-6 py-4 border border-slate-200">
-                Black
+                DX 102
               </td>
               <td className="px-6 py-4 border border-slate-200">
-                Accessories
+                DX 102
               </td>
               <td className="px-6 py-4 border border-slate-200">
-                $99
+                DX 102
               </td>
               <td className="px-6 py-4 border border-slate-200">
-                $1999
+                DX 102
               </td>
             </tr>
           </tbody>
