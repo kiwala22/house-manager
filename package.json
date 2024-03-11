@@ -10,13 +10,16 @@
     "@types/react-router-dom": "^5.3.3",
     "autoprefixer": "^10.4.14",
     "axios": "^1.6.7",
+    "dayjs": "1.11.6",
     "esbuild": "^0.17.18",
     "esbuild-plugin-tsc": "^0.4.0",
     "postcss": "^8.4.23",
     "react": "^18.2.0",
+    "react-datepicker": "^6.2.0",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
     "react-router-dom": "^6.11.1",
+    "react-tailwindcss-datepicker": "^1.6.6",
     "slate": "^0.94.1",
     "slate-history": "^0.93.0",
     "slate-react": "^0.99.0",
@@ -26,5 +29,8 @@
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets",
     "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify"
+  },
+  "devDependencies": {
+    "@types/react-datepicker": "^6.0.3"
   }
 }

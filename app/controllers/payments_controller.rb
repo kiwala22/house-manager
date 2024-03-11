@@ -23,16 +23,20 @@ class PaymentsController < ApplicationController
 
   # POST /payments or /payments.json
   def create
-    @payment = @property.payments.new(payment_params.merge(user_id: current_user.id))
+    # Extract and remove the `date_range` from the permitted parameters
+    date_range_params = payment_params.delete(:date_range)
+    formatted_date_range = "[#{[:startDate]}, #{date_range_params[:endDate]})"
 
-    respond_to do |format|
-      if @payment.save
-        format.html { redirect_to payment_url(@payment), notice: "Payment was successfully created." }
-        format.json { render :show, status: :created, location: @payment }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @payment.errors, status: :unprocessable_entity }
-      end
+    # Initialize and save the new payment with merged custom parameters
+    @payment = @property.payments.new(payment_params.merge(
+      user_id: current_user.id,
+      date_range: formatted_date_range,
+    ))
+
+    if @payment.save
+      redirect_to payment_url(@payment), notice: "Payment was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -72,6 +76,9 @@ class PaymentsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def payment_params
-    params.require(:payment).permit(:amount, :phone_number, :tenant_name, :nin_number, :date_range)
+    logger.debug "Submitted params: #{params.inspect}"
+
+    params.require(:payment).permit(:amount, :phone_number, :tenant_name, :nin_number,
+                                    date_range: %i[startDate endDate])
   end
 end
