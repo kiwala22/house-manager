@@ -8,6 +8,11 @@ interface Property {
   room_number: string;
 }
 
+interface UpdatePaymentProps {
+  paymentId: number;
+  updatePayment: (payment: Payment) => void;
+}
+
 // Define the structure of the payment object.
 interface Payment {
   id: number;
@@ -22,20 +27,16 @@ interface Payment {
   };
 }
 
-interface ModalProps {
-  addPayment: (payment: Payment) => void;
-}
-
-const Modal: React.FC<ModalProps> = ({ addPayment }) => {
+const UpdatePayment: React.FC<UpdatePaymentProps> = ({ paymentId, updatePayment }) => {
   // State management hooks for modal control and form fields.
+  const [, setPropertyId] = useState('');
   const [amount, setAmount] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [nin_number, setNin_number] = useState('');
-  const [property_id, setPropertyId] = useState('');
   const [tenant_name, setTenant_name] = useState('');
   const [phone_number, setPhone_number] = useState('');
   const [properties, setProperties] = useState<Property[]>([]);
-  const [date_range, setDate_range] = useState<DateValueType>({ startDate: null, endDate: null });
+  const [date_range, setDate_range] = useState<DateValueType>({ startDate: null, endDate: null })
 
   // Date range selection handler
   const handleValueChange = (newValue: DateValueType) => {
@@ -52,11 +53,11 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
   }, []);
 
   // Form submission handler
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let path = `/properties/${property_id}/payments`
+    let path = `/payments/${paymentId}`
     try {
-      const response = await axios.post(path, {
+      const response = await axios.patch(path, {
         payment: {
           tenant_name,
           amount,
@@ -68,13 +69,13 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'X-CSRF-Token': getCSRFToken() || '',
+          'X-CSRF-Token': getCSRFToken() || '', // Add the CSRF token to the request headers
         }
       });
 
       if (response.status === 200) {
         setIsOpen(false)
-        addPayment(response.data);
+        updatePayment(response.data);
       } else {
         console.log(response.statusText);
       }
@@ -94,7 +95,7 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
     }
   };
 
-  // Close modal on Esc key press
+  //closing the modal with Esc key
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -111,14 +112,7 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
 
   return (
     <>
-      <button
-        onClick={toggleModal}
-        className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        type="button"
-      >
-        Make payment
-      </button>
-
+      <a href="#" onClick={toggleModal} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
       {isOpen && (
         <div
           onClick={handleOutsideClick}
@@ -130,7 +124,7 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
             <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Create New Payment
+                  Update Payment
                 </h3>
                 <button
                   type="button"
@@ -145,7 +139,7 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
               </div>
               {/* modal content */}
               <form
-                onSubmit={handleSubmit}
+                onSubmit={handleUpdate}
                 className="p-4 md:p-5">
                 <div className="grid gap-4 mb-4 grid-cols-2">
                   <div className="col-span-2">
@@ -241,7 +235,7 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                  Add new payment
+                  Update payment
                 </button>
               </form>
             </div>
@@ -252,4 +246,4 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
   );
 };
 
-export default Modal;
+export default UpdatePayment;

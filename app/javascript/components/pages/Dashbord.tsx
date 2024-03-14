@@ -1,97 +1,120 @@
-import Modal from "./PaymentModal"
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import Modal from './PaymentModal';
+import UpdatePayment from './UpdatePaymentModal';
+import { getCSRFToken } from '../Headers';
+
+// Define the structure of the payment object.
+interface Payment {
+  id: number;
+  amount: number;
+  phone_number: string;
+  tenant_name: string;
+  nin_number: string;
+  date_range: string;
+  property: {
+    id: number;
+    room_number: string;
+  };
+}
 
 export const Dashboard = () => {
+  // State to store the list of payments.
+  const [payments, setPayments] = useState<Payment[]>([]);
+
+  // Function to add a new payment to the local state, triggered after a payment is successfully created in the Modal.
+  const addPayment = (newPayment: Payment) => {
+    setPayments((prevPayments) => [newPayment, ...prevPayments]);
+  };
+
+  //updating payment
+  const updatePayment = (updatedPayment: Payment) => {
+    setPayments((prevPayments) => prevPayments.map(payment => payment.id === updatedPayment.id ? updatedPayment : payment));
+  };
+
+  // Fetch all payments on component mount.
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get<Payment[]>('/payments');
+        setPayments(response.data);
+      } catch (error) {
+        console.error('Error fetching payment data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Function to delete a payment by ID, updating the local state to reflect the changes.
+  const deletePayment = async (id: number) => {
+    try {
+      await axios.delete(`/payments/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-CSRF-Token': getCSRFToken() || '',
+        },
+      });
+      // Update the payments state by filtering out the deleted payment.
+      setPayments((currentPayments) => currentPayments.filter((payment) => payment.id !== id));
+    } catch (error) {
+      console.error('Error deleting payment:', error);
+    }
+  };
 
   return (
     <section>
-      <div className="block p-6 border border-gray-200 rounded-lg bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+      <div className="block p-6 rounded-lg border border-gray-200 bg-gray-100 dark:bg-gray-800 dark:border-gray-700">
         <div className="relative overflow-x-auto">
           <div className="pt-4 mb-8">
             <div className="flex justify-between items-center">
-              <div className="">
-                <p className=" text-lg mb-4 font-semibold text-left rtl:text-right text-gray-900 bg-gray-100 dark:text-white dark:bg-gray-800">
+              <div>
+                <p className="text-lg mb-4 font-semibold text-left text-gray-900 dark:text-white">
                   Payment Details
                 </p>
-                <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">    Tenant Payment History Overview</p>
+                <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
+                  Tenants Payment History Overview
+                </p>
               </div>
-              <Modal />
+              <Modal addPayment={addPayment} />
             </div>
           </div>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-              <thead className="border-b text-xs text-white uppercase bg-blue-600 dark:bg-gray-700 dark:text-gray-400">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs uppercase bg-blue-600 text-white dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="py-3 px-6">Names</th>
                   <th scope="col" className="py-3 px-6">Phone Number</th>
                   <th scope="col" className="py-3 px-6">Amount Paid</th>
-                  <th scope="col" className="py-3 px-6">Nin number</th>
-                  <th scope="col" className="py-3 px-6">Room number</th>
+                  <th scope="col" className="py-3 px-6">NIN Number</th>
+                  <th scope="col" className="py-3 px-6">Room Number</th>
                   <th scope="col" className="py-3 px-6">Date</th>
                   <th scope="col" colSpan={2} className="py-3 px-6">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="py-4 px-6">Mutebi Godfrey</td>
-                  <td className="py-4 px-6">0780140670</td>
-                  <td className="py-4 px-6">150000</td>
-                  <td className="py-4 px-6">46wefgtyhjuk15</td>
-                  <td className="py-4 px-6">DX206</td>
-                  <td className="py-4 px-6">12/06/2026-23/33/34</td>
-                  <td className="py-4 px-6">
-                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
-                  </td>
-                  <td className="py-4 px-6">
-                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                  </td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="py-4 px-6">Mutebi Godfrey</td>
-                  <td className="py-4 px-6">0780140670</td>
-                  <td className="py-4 px-6">150000</td>
-                  <td className="py-4 px-6">46wefgtyhjuk15</td>
-                  <td className="py-4 px-6">DX206</td>
-                  <td className="py-4 px-6">12/06/2026</td>
-                  <td className="py-4 px-6">
-                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
-                  </td>
-                  <td className="py-4 px-6">
-                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                  </td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="py-4 px-6">Mutebi Godfrey</td>
-                  <td className="py-4 px-6">0780140670</td>
-                  <td className="py-4 px-6">150000</td>
-                  <td className="py-4 px-6">46wefgtyhjuk15</td>
-                  <td className="py-4 px-6">DX206</td>
-                  <td className="py-4 px-6">12/06/2026</td>
-                  <td className="py-4 px-6">
-                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
-                  </td>
-                  <td className="py-4 px-6">
-                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                  </td>
-                </tr>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="py-4 px-6">katongole frank</td>
-                  <td className="py-4 px-6">Data 2</td>
-                  <td className="py-4 px-6">Data 3</td>
-                  <td className="py-4 px-6">Data 4</td>
-                  <td className="py-4 px-6">DX206</td>
-                  <td className="py-4 px-6">Data 5</td>
-                  <td className="py-4 px-6">
-                    <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
-                  </td>
-                  <td className="py-4 px-6">
-                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                  </td>
-                </tr>
+                {payments.map((payment) => (
+                  <tr key={payment.id} className="border-b bg-white dark:bg-gray-800 dark:border-gray-700">
+                    <td className="py-4 px-6">{payment.tenant_name}</td>
+                    <td className="py-4 px-6">{payment.phone_number}</td>
+                    <td className="py-4 px-6">Shs {payment.amount}</td>
+                    <td className="py-4 px-6">{payment.nin_number}</td>
+                    <td className="py-4 px-6">{payment.property.room_number}</td>
+                    <td className="py-4 px-6">{payment.date_range.replace('...', ' to ')}</td>
+                    <td className="py-4 px-6">
+                      <a href="#!" onClick={() => deletePayment(payment.id)} className="text-red-600 dark:text-red-500 hover:underline">Delete</a>
+                    </td>
+                    <td className="py-4 px-6">
+                      <UpdatePayment paymentId={payment.id} updatePayment={updatePayment} />
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
       </div>
     </section>
-  )
-}
+  );
+};

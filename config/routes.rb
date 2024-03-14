@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   root 'home#index'
 
   scope '/', defaults: { format: :json } do
+    resources :payments, only: [:index]
+
     resources :properties do
       resources :payments, shallow: true
     end

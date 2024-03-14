@@ -2,8 +2,9 @@
 
 class PaymentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_payment, only: %i[show edit update destroy]
+  before_action :set_payment, only: %i[show edit update destroy formatted_date_range]
   before_action :set_property, only: %i[new create]
+  before_action :formatted_date_range, only: %i[create, update]
 
   # GET /payments or /payments.json
   def index
@@ -23,11 +24,6 @@ class PaymentsController < ApplicationController
 
   # POST /payments or /payments.json
   def create
-    # Extract and remove the `date_range` from the permitted parameters
-    date_range_params = payment_params.delete(:date_range)
-    formatted_date_range = "[#{[:startDate]}, #{date_range_params[:endDate]})"
-
-    # Initialize and save the new payment with merged custom parameters
     @payment = @property.payments.new(payment_params.merge(
       user_id: current_user.id,
       date_range: formatted_date_range,
@@ -43,7 +39,7 @@ class PaymentsController < ApplicationController
   # PATCH/PUT /payments/1 or /payments/1.json
   def update
     respond_to do |format|
-      if @payment.update(payment_params)
+      if @payment.update(payment_params.merge(date_range: @formatted_date_range))
         format.html { redirect_to payment_url(@payment), notice: "Payment was successfully updated." }
         format.json { render :show, status: :ok, location: @payment }
       else
@@ -74,10 +70,14 @@ class PaymentsController < ApplicationController
     @payment = Payment.find(params[:id])
   end
 
+  # Extract and remove the `date_range` from the permitted parameters
+  def formatted_date_range
+    date_range_params = payment_params.delete(:date_range)
+    @formatted_date_range = "[#{date_range_params[:startDate]}, #{date_range_params[:endDate]})"
+  end
+
   # Only allow a list of trusted parameters through.
   def payment_params
-    logger.debug "Submitted params: #{params.inspect}"
-
     params.require(:payment).permit(:amount, :phone_number, :tenant_name, :nin_number,
                                     date_range: %i[startDate endDate])
   end
