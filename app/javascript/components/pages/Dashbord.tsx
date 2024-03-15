@@ -1,22 +1,9 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import Modal from './PaymentModal';
-import UpdatePayment from './UpdatePaymentModal';
-import { getCSRFToken } from '../Headers';
-
-// Define the structure of the payment object.
-interface Payment {
-  id: number;
-  amount: number;
-  phone_number: string;
-  tenant_name: string;
-  nin_number: string;
-  date_range: string;
-  property: {
-    id: number;
-    room_number: string;
-  };
-}
+import Modal from '@components/pages/PaymentModal';
+import UpdatePayment from '@components/pages/UpdatePaymentModal';
+import { Payment } from '@components/Types';
+import { getAllPayments } from '@components/Api';
+import axiosInstance from '@components/Api/axiosInstance.tsaxiosInstance';
 
 export const Dashboard = () => {
   // State to store the list of payments.
@@ -36,8 +23,8 @@ export const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<Payment[]>('/payments');
-        setPayments(response.data);
+        const fetchedPayments = await getAllPayments();
+        setPayments(fetchedPayments);
       } catch (error) {
         console.error('Error fetching payment data:', error);
       }
@@ -49,13 +36,7 @@ export const Dashboard = () => {
   // Function to delete a payment by ID, updating the local state to reflect the changes.
   const deletePayment = async (id: number) => {
     try {
-      await axios.delete(`/payments/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'X-CSRF-Token': getCSRFToken() || '',
-        },
-      });
+      await axiosInstance.delete(`/payments/${id}`);
       // Update the payments state by filtering out the deleted payment.
       setPayments((currentPayments) => currentPayments.filter((payment) => payment.id !== id));
     } catch (error) {

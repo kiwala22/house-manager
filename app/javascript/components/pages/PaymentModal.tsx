@@ -1,39 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import axios from "axios";
-import { getCSRFToken } from '../Headers'
 import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
-
-interface Property {
-  id: number;
-  room_number: string;
-}
-
-// Define the structure of the payment object.
-interface Payment {
-  id: number;
-  amount: number;
-  phone_number: string;
-  tenant_name: string;
-  nin_number: string;
-  date_range: string;
-  property: {
-    id: number;
-    room_number: string;
-  };
-}
-
-interface ModalProps {
-  addPayment: (payment: Payment) => void;
-}
+import { ModalProps, Property } from '@components/Types';
+import { fetchProperties } from '@components/Api';
+import axiosInstance from '@components/Api/axiosInstance.tsaxiosInstance';
 
 const Modal: React.FC<ModalProps> = ({ addPayment }) => {
   // State management hooks for modal control and form fields.
-  const [amount, setAmount] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [nin_number, setNin_number] = useState('');
-  const [property_id, setPropertyId] = useState('');
   const [tenant_name, setTenant_name] = useState('');
+  const [amount, setAmount] = useState<number>(150000);
   const [phone_number, setPhone_number] = useState('');
+  const [property_id, setPropertyId] = useState<number>(1);
   const [properties, setProperties] = useState<Property[]>([]);
   const [date_range, setDate_range] = useState<DateValueType>({ startDate: null, endDate: null });
 
@@ -45,10 +23,16 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
 
   // Fetch properties on component mount
   useEffect(() => {
-    fetch('/properties')
-      .then(response => response.json())
-      .then((data: Property[]) => setProperties(data))
-      .catch(error => console.error('Error fetching properties:', error));
+    const getProperties = async () => {
+      try {
+        const fetchedProperties = await fetchProperties();
+        setProperties(fetchedProperties);
+      } catch (error) {
+        console.error('Failed to fetch properties:', error);
+      }
+    };
+
+    getProperties();
   }, []);
 
   // Form submission handler
@@ -56,19 +40,13 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
     e.preventDefault();
     let path = `/properties/${property_id}/payments`
     try {
-      const response = await axios.post(path, {
+      const response = await axiosInstance.post(path, {
         payment: {
           tenant_name,
           amount,
           phone_number,
           date_range,
           nin_number,
-        }
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'X-CSRF-Token': getCSRFToken() || '',
         }
       });
 
@@ -171,7 +149,7 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
                       placeholder="shs.100000"
                       required
                       value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
+                      onChange={(e) => setAmount(Number((e.target.value)))}
                     />
                   </div>
                   <div className="col-span-2 sm:col-span-1">
@@ -179,7 +157,7 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
                     <select
                       id="property_id"
                       name='property_id'
-                      onChange={(e) => setPropertyId(e.target.value)}
+                      onChange={(e) => setPropertyId(Number(e.target.value))}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     >
                       <option value="">Select a Property</option>

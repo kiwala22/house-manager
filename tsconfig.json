@@ -4,7 +4,11 @@
     "allowJs": true,
     "module": "es2020",
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -14,11 +18,20 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
+    "baseUrl": "app/javascript",
     "paths": {
-      "*": ["node_modules/*"]
+      "*": [
+        "node_modules/*"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
     }
   },
-  "include": ["app/javascript/**/*"],
-  "exclude": ["node_modules"]
+  "include": [
+    "app/javascript/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

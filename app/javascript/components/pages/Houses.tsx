@@ -1,90 +1,51 @@
+import { fetchProperties } from "@components/Api";
+import { Property } from "@components/Types";
+import { useEffect, useState } from "react";
 
 export const Houses = () => {
+  const [properties, setProperties] = useState<Property[]>([]);
+
+  useEffect(() => {
+    const getProperties = async () => {
+      try {
+        const fetchedProperties = await fetchProperties();
+        setProperties(fetchedProperties);
+      } catch (error) {
+        console.error('Failed to fetch properties:', error);
+      }
+    };
+
+    getProperties();
+  }, []);
 
   return (
     <div className="py-4 px-6 bg-slate-50 border border-gray-200 rounded-lg shadow dark:border-gray-700">
-      <div className="relative overflow-x-auto">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400  border-gray-200 table-fixed border-separate">
-          <thead className="text-xs text-gray-700 uppercase  dark:text-gray-400">
-            <tr className="border-b">
-              <th colSpan={3} className="py-3">
-                Room type
-              </th>
-              <th colSpan={2} className="py-3">
-                Filter by
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <td className="px-6 py-4 border border-slate-200">
-                DX 102
-              </td>
-              <td className="px-6 py-4 border border-slate-200">
-                DX 102
-              </td>
-              <td className="px-6 py-4 border border-slate-200">
-                DX 102
-              </td>
-              <td className="px-6 py-4 border border-slate-200">
-                DX 102
-              </td>
-              <td className="px-6 py-4 border border-slate-200">
-                DX 102
-              </td>
-            </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <td className="px-6 py-4 border border-slate-200" >
-                DX 102
-              </td>
-              <td className="px-6 py-4 border border-slate-200">
-                DX 102
-              </td>
-              <td className="px-6 py-4 border border-slate-200">
-                DX 102
-              </td>
-              <td className="px-6 py-4 border border-slate-200">
-                DX 102
-              </td>
-              <td className="px-6 py-4 border border-slate-200">
-                DX 102
-              </td>
-            </tr>
-            <tr className="bg-white dark:bg-gray-800">
-              <td className="px-6 py-4 border border-slate-200">
-                DX 102
-              </td>
-              <td className="px-6 py-4 border border-slate-200">
-                DX 102
-              </td>
-              <td className="px-6 py-4 border border-slate-200">
-                DX 102
-              </td>
-              <td className="px-6 py-4 border border-slate-200">
-                DX 102
-              </td>
-              <td className="px-6 py-4 border border-slate-200">
-                DX 102
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <div className="font-semibold text-gray-900 dark:text-white">
-              <div className="flex flex-row px-6 py-2 space-x-4 items-center">
-                <div className="flex pt-3 space-x-2">
-                  <button type="button" className="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg">10</button>
-                  <h1 className="flex justify-center items-center text-slate-500">occupied</h1>
-                </div>
-                <div className="flex pt-3 space-x-2">
-                  <button type="button" className="px-3 py-2 text-xs font-medium text-center text-white bg-green-700 rounded-lg">5</button>
-                  <h1 className="flex justify-center items-center text-slate-500">vaccant</h1>
-                </div>
-              </div>
-            </div>
-          </tfoot>
-        </table>
+      {/* Responsive Header */}
+      <div className="text-xs text-gray-700 uppercase dark:text-gray-400 mb-4">
+        <div className="flex justify-between">
+          <div>Room type</div>
+          <div>Filter by</div>
+        </div>
+      </div>
+
+      {/* Properties Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {properties.map((property) => (
+          <div key={property.id} className="border p-4 rounded-lg shadow-sm bg-white dark:bg-gray-800 dark:border-gray-700">
+            <h3 className="font-semibold text-lg dark:text-white">{`Room ${property.room_number}`}</h3>
+            <p className="text-gray-600 dark:text-gray-400">Details about the property...</p>
+            {/* Add more details about the property here */}
+          </div>
+        ))}
+      </div>
+
+      {/* Footer Statistics */}
+      <div className="mt-6">
+        <div className="flex justify-around">
+          <button type="button" className="px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-md">Occupied: 10</button>
+          <button type="button" className="px-4 py-2 text-sm font-medium text-white bg-green-700 rounded-md">Vacant: 5</button>
+        </div>
       </div>
     </div>
-
-  )
-}
+  );
+};
