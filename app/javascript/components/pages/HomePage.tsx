@@ -1,9 +1,10 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import { Dashboard } from "./Dashbord";
-import { Houses } from "./Houses";
+import Dashboard from "@components/pages/Dashbord";
+import Houses from "@components/pages/Houses";
+import CreateRoom from "@components/pages/CreateRoom";
 
-export const HomePage = () => {
+const HomePage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
   const navigate = useNavigate();
 
@@ -35,7 +36,7 @@ export const HomePage = () => {
     }
   };
 
-  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleClickLogOut = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
     logOut();
   };
@@ -68,22 +69,30 @@ export const HomePage = () => {
           <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
             <ul className="space-y-2 font-medium">
               <li onClick={() => navigate('/')}>
-                <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                   <svg aria-hidden="true" className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
-                  <span className="ml-3" >Dashboard</span>
-                </a>
+                  <span className="ml-3">Dashboard</span>
+                </div>
               </li>
               <li onClick={() => navigate('/houses')}>
-                <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                   <svg aria-hidden="true" className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clipRule="evenodd"></path></svg>
                   <span className="flex-1 ml-3 whitespace-nowrap">Houses</span>
-                </a>
+                </div>
+              </li>
+              <li onClick={() => navigate('/property')}>
+                <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
+                  </svg>
+                  <span className="flex-1 ml-3 whitespace-nowrap">Add Room</span>
+                </div>
               </li>
               <li>
-                <a href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer" onClick={handleClickLogOut}>
                   <svg aria-hidden="true" className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd"></path></svg>
-                  <span className="flex-1 ml-3 whitespace-nowrap" onClick={handleClick}>Sign Out</span>
-                </a>
+                  <span className="flex-1 ml-3 whitespace-nowrap">Sign Out</span>
+                </div>
               </li>
             </ul>
           </div>
@@ -93,6 +102,7 @@ export const HomePage = () => {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/houses" element={<Houses />} />
+              <Route path="/property" element={<CreateRoom />} />
             </Routes>
           </div>
         </main>
@@ -105,3 +115,4 @@ export const HomePage = () => {
     </body>
   )
 }
+export default HomePage;

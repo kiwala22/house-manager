@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
-import { ModalProps, Property } from '@components/Types';
+import { ModalProps, PropertyProps } from '@components/Types';
 import { fetchProperties } from '@components/Api';
 import axiosInstance from '@components/Api/axiosInstance.tsaxiosInstance';
 
@@ -12,7 +12,7 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
   const [amount, setAmount] = useState<number>(150000);
   const [phone_number, setPhone_number] = useState('');
   const [property_id, setPropertyId] = useState<number>(1);
-  const [properties, setProperties] = useState<Property[]>([]);
+  const [properties, setProperties] = useState<PropertyProps[]>([]);
   const [date_range, setDate_range] = useState<DateValueType>({ startDate: null, endDate: null });
 
   // Date range selection handler
@@ -50,7 +50,7 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
         }
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         setIsOpen(false)
         addPayment(response.data);
       } else {

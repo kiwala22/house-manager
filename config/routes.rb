@@ -19,7 +19,9 @@ Rails.application.routes.draw do
     resources :payments, only: [:index]
 
     resources :properties do
-      resources :payments, shallow: true
+      resources :payments, shallow: true do
+        resources :receipts, only: [:create]
+      end
     end
   end
 

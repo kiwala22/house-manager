@@ -79,6 +79,7 @@ end
 # customary gems
 gem 'activeadmin'
 gem 'devise'
+gem 'prawn'
 
 # Plus integrations with:
 gem 'cancancan'

@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  amount_paid: 1
+  date_range: 
+  tenant_name: MyString
+  user: one
+  payment: one
+
+two:
+  amount_paid: 1
+  date_range: 
+  tenant_name: MyString
+  user: two
+  payment: two

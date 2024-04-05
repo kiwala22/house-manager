@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
 import Modal from '@components/pages/PaymentModal';
 import UpdatePayment from '@components/pages/UpdatePaymentModal';
-import { Payment } from '@components/Types';
+import { PaymentProps } from '@components/Types';
 import { getAllPayments } from '@components/Api';
 import axiosInstance from '@components/Api/axiosInstance.tsaxiosInstance';
 
-export const Dashboard = () => {
+const Dashboard = () => {
   // State to store the list of payments.
-  const [payments, setPayments] = useState<Payment[]>([]);
+  const [payments, setPayments] = useState<PaymentProps[]>([]);
 
   // Function to add a new payment to the local state, triggered after a payment is successfully created in the Modal.
-  const addPayment = (newPayment: Payment) => {
+  const addPayment = (newPayment: PaymentProps) => {
     setPayments((prevPayments) => [newPayment, ...prevPayments]);
   };
 
   //updating payment
-  const updatePayment = (updatedPayment: Payment) => {
+  const updatePayment = (updatedPayment: PaymentProps) => {
     setPayments((prevPayments) => prevPayments.map(payment => payment.id === updatedPayment.id ? updatedPayment : payment));
   };
 
@@ -99,3 +99,5 @@ export const Dashboard = () => {
     </section>
   );
 };
+
+export default Dashboard;

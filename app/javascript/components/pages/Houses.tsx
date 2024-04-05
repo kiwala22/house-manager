@@ -1,9 +1,9 @@
 import { fetchProperties } from "@components/Api";
-import { Property } from "@components/Types";
+import { PropertyProps } from "@components/Types";
 import { useEffect, useState } from "react";
 
-export const Houses = () => {
-  const [properties, setProperties] = useState<Property[]>([]);
+const Houses = () => {
+  const [properties, setProperties] = useState<PropertyProps[]>([]);
 
   useEffect(() => {
     const getProperties = async () => {
@@ -34,6 +34,8 @@ export const Houses = () => {
           <div key={property.id} className="border p-4 rounded-lg shadow-sm bg-white dark:bg-gray-800 dark:border-gray-700">
             <h3 className="font-semibold text-lg dark:text-white">{`Room ${property.room_number}`}</h3>
             <p className="text-gray-600 dark:text-gray-400">Details about the property...</p>
+            <p className="text-gray-600 dark:text-gray-400">{`Status : ${property.status}`}</p>
+
             {/* Add more details about the property here */}
           </div>
         ))}
@@ -49,3 +51,5 @@ export const Houses = () => {
     </div>
   );
 };
+
+export default Houses;

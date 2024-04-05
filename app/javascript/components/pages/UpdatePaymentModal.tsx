@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Property, UpdatePaymentProps } from "@components/Types";
+import { PropertyProps, UpdatePaymentProps } from "@components/Types";
 import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
 import { fetchProperties } from "@components/Api";
 import axiosInstance from "@components/Api/axiosInstance.tsaxiosInstance";
@@ -12,7 +12,7 @@ const UpdatePayment: React.FC<UpdatePaymentProps> = ({ paymentId, updatePayment 
   const [tenant_name, setTenant_name] = useState('');
   const [phone_number, setPhone_number] = useState('');
   const [amount, setAmount] = useState<number>(150000);
-  const [properties, setProperties] = useState<Property[]>([]);
+  const [properties, setProperties] = useState<PropertyProps[]>([]);
   const [date_range, setDate_range] = useState<DateValueType>({ startDate: null, endDate: null })
 
   // Date range selection handler
@@ -50,7 +50,7 @@ const UpdatePayment: React.FC<UpdatePaymentProps> = ({ paymentId, updatePayment 
         }
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         setIsOpen(false)
         updatePayment(response.data);
       } else {

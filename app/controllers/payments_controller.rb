@@ -4,7 +4,7 @@ class PaymentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_payment, only: %i[show edit update destroy formatted_date_range]
   before_action :set_property, only: %i[new create]
-  before_action :formatted_date_range, only: %i[create, update]
+  before_action :formatted_date_range, only: %i[create update]
 
   # GET /payments or /payments.json
   def index
@@ -26,13 +26,17 @@ class PaymentsController < ApplicationController
   def create
     @payment = @property.payments.new(payment_params.merge(
       user_id: current_user.id,
-      date_range: formatted_date_range,
+      date_range: @formatted_date_range,
     ))
 
-    if @payment.save
-      redirect_to payment_url(@payment), notice: "Payment was successfully created."
-    else
-      render :new, status: :unprocessable_entity
+    respond_to do |format|
+      if @payment.save
+        format.html { redirect_to payment_url(@payment), notice: "Payment was successfully created." }
+        format.json { render :show, status: :created, location: @payment }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @payment.errors, status: :unprocessable_entity }
+      end
     end
   end
 

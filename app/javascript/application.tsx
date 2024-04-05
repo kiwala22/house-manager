@@ -1,6 +1,5 @@
 import React from "react";
 import { createRoot } from 'react-dom/client';
-import { HomePage } from './components/pages/HomePage'
 import { Routes } from './components/Routes'
 
 document.addEventListener("DOMContentLoaded", () => {

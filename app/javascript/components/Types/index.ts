@@ -1,5 +1,5 @@
 
-export interface Payment {
+export interface PaymentProps {
   id: number;
   amount: number;
   phone_number: string;
@@ -13,15 +13,17 @@ export interface Payment {
 }
 
 export interface ModalProps {
-  addPayment: (payment: Payment) => void;
+  addPayment: (payment: PaymentProps) => void;
 }
 
-export interface Property {
+export interface PropertyProps {
   id: number;
   room_number: string;
+  status: number;
 }
 
 export interface UpdatePaymentProps {
   paymentId: number;
-  updatePayment: (payment: Payment) => void;
+  updatePayment: (payment: PaymentProps) => void;
 }
+
