@@ -6,4 +6,5 @@ class Property < ApplicationRecord
 
   has_many :payments
   belongs_to :user
+  scope :ordered, -> { order(id: :asc) }
 end

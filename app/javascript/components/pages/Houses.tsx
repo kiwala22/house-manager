@@ -1,9 +1,14 @@
 import { fetchProperties } from "@components/Api";
 import { PropertyProps } from "@components/Types";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Modal from "@components/pages/UpdateStatus";
 
 const Houses = () => {
+  const navigate = useNavigate();
   const [properties, setProperties] = useState<PropertyProps[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState<PropertyProps | null>(null);
 
   useEffect(() => {
     const getProperties = async () => {
@@ -18,9 +23,17 @@ const Houses = () => {
     getProperties();
   }, []);
 
+  const openModal = (property: PropertyProps) => {
+    setSelectedProperty(property);
+    setIsModalOpen(true);
+  }
+
+  const updateProperty = (updatedProperty: PropertyProps) => {
+    setProperties((prevProperties) => prevProperties.map(property => property.id === updatedProperty.id ? updatedProperty : property));
+  };
+
   return (
     <div className="py-4 px-6 bg-slate-50 border border-gray-200 rounded-lg shadow dark:border-gray-700">
-      {/* Responsive Header */}
       <div className="text-xs text-gray-700 uppercase dark:text-gray-400 mb-4">
         <div className="flex justify-between">
           <div>Room type</div>
@@ -28,20 +41,29 @@ const Houses = () => {
         </div>
       </div>
 
-      {/* Properties Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {properties.map((property) => (
-          <div key={property.id} className="border p-4 rounded-lg shadow-sm bg-white dark:bg-gray-800 dark:border-gray-700">
-            <h3 className="font-semibold text-lg dark:text-white">{`Room ${property.room_number}`}</h3>
-            <p className="text-gray-600 dark:text-gray-400">Details about the property...</p>
-            <p className="text-gray-600 dark:text-gray-400">{`Status : ${property.status}`}</p>
+          <>
+            <div
+              onContextMenu={(e) => {
+                e.preventDefault();
+                openModal(property);
+              }}
+              onDoubleClick={() => navigate(`/details/${property.id}`)}
+              key={property.id}
+              className="cursor-pointer border p-4 rounded-lg shadow-sm bg-white dark:bg-gray-800 dark:border-gray-700">
+              <h3 className="font-semibold text-lg dark:text-white">{`Room ${property.room_number}`}</h3>
+              <p className="text-gray-600 dark:text-gray-400">Details about the property...</p>
+              <p className="text-gray-600 dark:text-gray-400">{`Status : ${property.status}`}</p>
+            </div>
+            {isModalOpen && selectedProperty && (
+              <Modal property={selectedProperty} onClose={() => setIsModalOpen(false)} updateProperty={updateProperty} />
+            )}
+          </>
 
-            {/* Add more details about the property here */}
-          </div>
         ))}
       </div>
 
-      {/* Footer Statistics */}
       <div className="mt-6">
         <div className="flex justify-around">
           <button type="button" className="px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-md">Occupied: 10</button>

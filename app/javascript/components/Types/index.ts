@@ -20,6 +20,10 @@ export interface PropertyProps {
   id: number;
   room_number: string;
   status: number;
+  user: {
+    id: number;
+    username: string;
+  }
 }
 
 export interface UpdatePaymentProps {

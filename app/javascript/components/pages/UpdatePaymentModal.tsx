@@ -50,7 +50,7 @@ const UpdatePayment: React.FC<UpdatePaymentProps> = ({ paymentId, updatePayment 
         }
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         setIsOpen(false)
         updatePayment(response.data);
       } else {
@@ -114,7 +114,6 @@ const UpdatePayment: React.FC<UpdatePaymentProps> = ({ paymentId, updatePayment 
                   <span className="sr-only">Close modal</span>
                 </button>
               </div>
-              {/* modal content */}
               <form
                 onSubmit={handleSubmit}
                 className="p-4 md:p-5">

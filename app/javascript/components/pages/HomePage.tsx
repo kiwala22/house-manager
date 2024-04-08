@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import Dashboard from "@components/pages/Dashbord";
 import Houses from "@components/pages/Houses";
 import CreateRoom from "@components/pages/CreateRoom";
+import PageNotFound from "@components/pages/NotFound";
+import PropertyDetails from "@components/pages/PropertyDetails";
 
 const HomePage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -103,6 +105,9 @@ const HomePage = () => {
               <Route path="/" element={<Dashboard />} />
               <Route path="/houses" element={<Houses />} />
               <Route path="/property" element={<CreateRoom />} />
+              <Route path="/details/:propertyId" element={<PropertyDetails />} />
+
+              <Route path="/*" element={<PageNotFound />} />
             </Routes>
           </div>
         </main>
