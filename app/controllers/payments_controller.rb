@@ -82,7 +82,7 @@ class PaymentsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def payment_params
-    params.require(:payment).permit(:amount, :phone_number, :tenant_name, :nin_number,
+    params.require(:payment).permit(:amount, :phone_number, :tenant_name, :nin_number, :property_id,
                                     date_range: %i[startDate endDate])
   end
 end

@@ -87,7 +87,7 @@ const Dashboard = () => {
                       <a href="#!" onClick={() => deletePayment(payment.id)} className="text-red-600 dark:text-red-500 hover:underline">Delete</a>
                     </td>
                     <td className="py-4 px-6">
-                      <UpdatePayment paymentId={payment.id} updatePayment={updatePayment} />
+                      <UpdatePayment payment={payment} updatePayment={updatePayment} />
                     </td>
                   </tr>
                 ))}

@@ -9,11 +9,11 @@ class ReceiptsController < InheritedResources::Base
       amount_paid: @payment.amount_paid,
       date_range: @payment.date_range,
       tenant_name: @payment.tenant_name,
-      user_id: current_user.id,
+      user_id: current_user.id
     )
     respond_to do |format|
       if @receipt.save
-        format.html { redirect_to receipt_url(@receipt), notice: "Receipt was successfully created." }
+        format.html { redirect_to receipt_url(@receipt), notice: 'Receipt was successfully created.' }
         format.json { render :show, status: :created, location: @receipt }
       else
         format.html { render :new, status: :unprocessable_entity }

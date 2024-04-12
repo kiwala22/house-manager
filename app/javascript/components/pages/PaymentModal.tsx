@@ -5,7 +5,6 @@ import { fetchProperties } from '@components/Api';
 import axiosInstance from '@components/Api/axiosInstance.tsaxiosInstance';
 
 const Modal: React.FC<ModalProps> = ({ addPayment }) => {
-  // State management hooks for modal control and form fields.
   const [isOpen, setIsOpen] = useState(false);
   const [nin_number, setNin_number] = useState('');
   const [tenant_name, setTenant_name] = useState('');
@@ -13,6 +12,7 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
   const [phone_number, setPhone_number] = useState('');
   const [property_id, setPropertyId] = useState<number>(1);
   const [properties, setProperties] = useState<PropertyProps[]>([]);
+  const [dateRangeError, setDateRangeError] = useState<string | null>(null);
   const [date_range, setDate_range] = useState<DateValueType>({ startDate: null, endDate: null });
 
   // Date range selection handler
@@ -38,6 +38,16 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
   // Form submission handler
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Check if both startDate and endDate in date_range are not null
+    if (!date_range?.startDate || !date_range?.endDate) {
+      setDateRangeError("Please select a valid date range.");
+      return;
+    }
+
+    // Reset date range error if validation passes
+    setDateRangeError(null);
+
     let path = `/properties/${property_id}/payments`
     try {
       const response = await axiosInstance.post(path, {
@@ -155,6 +165,7 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
                   <div className="col-span-2 sm:col-span-1">
                     <label htmlFor="Room number" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Room Number</label>
                     <select
+                      required
                       id="property_id"
                       name='property_id'
                       onChange={(e) => setPropertyId(Number(e.target.value))}
@@ -199,8 +210,10 @@ const Modal: React.FC<ModalProps> = ({ addPayment }) => {
                     <Datepicker
                       value={date_range}
                       onChange={handleValueChange}
-                      showShortcuts={true}
                     />
+                    {dateRangeError && (
+                      <p className="mt-2 text-sm text-red-600">{dateRangeError}</p> // Display error message
+                    )}
                   </div>
                 </div>
                 <button

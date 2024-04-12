@@ -4,15 +4,16 @@ import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
 import { fetchProperties } from "@components/Api";
 import axiosInstance from "@components/Api/axiosInstance.tsaxiosInstance";
 
-const UpdatePayment: React.FC<UpdatePaymentProps> = ({ paymentId, updatePayment }) => {
+const UpdatePayment: React.FC<UpdatePaymentProps> = ({ payment, updatePayment }) => {
   // State management hooks for modal control and form fields.
   const [isOpen, setIsOpen] = useState(false);
-  const [, setPropertyId] = useState<number>(1);
-  const [nin_number, setNin_number] = useState('');
-  const [tenant_name, setTenant_name] = useState('');
-  const [phone_number, setPhone_number] = useState('');
-  const [amount, setAmount] = useState<number>(150000);
+  const [property_id, setPropertyId] = useState<number>(payment.property.id);
+  const [nin_number, setNin_number] = useState(payment.nin_number);
+  const [tenant_name, setTenant_name] = useState(payment.tenant_name);
+  const [phone_number, setPhone_number] = useState(payment.phone_number);
+  const [amount, setAmount] = useState<number>(payment.amount);
   const [properties, setProperties] = useState<PropertyProps[]>([]);
+  const [dateRangeError, setDateRangeError] = useState<string | null>(null);
   const [date_range, setDate_range] = useState<DateValueType>({ startDate: null, endDate: null })
 
   // Date range selection handler
@@ -38,7 +39,17 @@ const UpdatePayment: React.FC<UpdatePaymentProps> = ({ paymentId, updatePayment 
   // Form submission handler
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let path = `/payments/${paymentId}`
+
+    // Check if both startDate and endDate in date_range are not null
+    if (!date_range?.startDate || !date_range?.endDate) {
+      setDateRangeError("Please select a valid date range.");
+      return;
+    };
+
+    // Reset date range error if validation passes
+    setDateRangeError(null);
+
+    let path = `/payments/${payment.id}`
     try {
       const response = await axiosInstance.patch(path, {
         payment: {
@@ -47,6 +58,7 @@ const UpdatePayment: React.FC<UpdatePaymentProps> = ({ paymentId, updatePayment 
           phone_number,
           date_range,
           nin_number,
+          property_id
         }
       });
 
@@ -147,12 +159,13 @@ const UpdatePayment: React.FC<UpdatePaymentProps> = ({ paymentId, updatePayment 
                   <div className="col-span-2 sm:col-span-1">
                     <label htmlFor="Room number" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Room Number</label>
                     <select
+                      required
                       id="property_id"
                       name='property_id'
                       onChange={(e) => setPropertyId(Number(e.target.value))}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     >
-                      <option value="">Select a Property</option>
+                      <option value={payment.property.id}>{payment.property.room_number}</option>
                       {properties.map(property => (
                         <option key={property.id} value={property.id}>
                           {property.room_number}
@@ -191,8 +204,10 @@ const UpdatePayment: React.FC<UpdatePaymentProps> = ({ paymentId, updatePayment 
                     <Datepicker
                       value={date_range}
                       onChange={handleValueChange}
-                      showShortcuts={true}
                     />
+                    {dateRangeError && (
+                      <p className="mt-2 text-sm text-red-600">{dateRangeError}</p> // Display error message
+                    )}
                   </div>
                 </div>
                 <button

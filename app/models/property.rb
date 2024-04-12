@@ -7,4 +7,6 @@ class Property < ApplicationRecord
   has_many :payments
   belongs_to :user
   scope :ordered, -> { order(id: :asc) }
+
+  validates :branch, :price, :status, :room_number, presence: true
 end

@@ -27,7 +27,7 @@ export interface PropertyProps {
 }
 
 export interface UpdatePaymentProps {
-  paymentId: number;
+  payment: PaymentProps;
   updatePayment: (payment: PaymentProps) => void;
 }
 
