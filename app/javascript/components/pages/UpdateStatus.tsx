@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PropertyProps } from "@components/Types";
 import axiosInstance from '@components/Api/axiosInstance.tsaxiosInstance';
+import { fetchProperties } from '@components/Api';
 
 interface ModalProps {
   property: PropertyProps;
@@ -10,7 +11,20 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ property, onClose, updateProperty }) => {
   const [status, setStatus] = useState(property.status || '');
+  const [properties, setProperties] = useState<PropertyProps[]>([]);
 
+  useEffect(() => {
+    const getProperties = async () => {
+      try {
+        const fetchedProperties = await fetchProperties();
+        setProperties(fetchedProperties);
+      } catch (error) {
+        console.error('Failed to fetch properties:', error);
+      }
+    };
+
+    getProperties();
+  }, []);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let path = `/properties/${property.id}`
@@ -79,8 +93,10 @@ const Modal: React.FC<ModalProps> = ({ property, onClose, updateProperty }) => {
                   onChange={(e) => setStatus(e.target.value)}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                   <option value="">Select Room Status</option>
-                  <option value="occupied">occupied</option>
-                  <option value="vacant">vacant</option>
+                  {Array.from(new Set(properties.map(property => property.status)))
+                    .map(branch => (
+                      <option key={branch} value={branch}>{branch}</option>
+                    ))}
                 </select>
               </div>
             </div>

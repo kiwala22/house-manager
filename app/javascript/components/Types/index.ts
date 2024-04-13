@@ -17,9 +17,10 @@ export interface ModalProps {
 }
 
 export interface PropertyProps {
+  branch: string;
   id: number;
   room_number: string;
-  status: number;
+  status: string;
   user: {
     id: number;
     username: string;

@@ -5,7 +5,7 @@ import { PaymentProps } from '@components/Types';
 import { getAllPayments } from '@components/Api';
 import axiosInstance from '@components/Api/axiosInstance.tsaxiosInstance';
 
-const Dashboard = () => {
+const Payment = () => {
   // State to store the list of payments.
   const [payments, setPayments] = useState<PaymentProps[]>([]);
 
@@ -100,4 +100,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Payment;

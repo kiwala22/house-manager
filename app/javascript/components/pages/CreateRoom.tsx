@@ -1,13 +1,28 @@
+import { fetchProperties } from "@components/Api";
 import axiosInstance from "@components/Api/axiosInstance.tsaxiosInstance";
-import { useState } from "react";
+import { PropertyProps } from "@components/Types";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const CreateRoom: React.FC = () => {
   const [branch, setBranch] = useState('');
   const [price, setPrice] = useState<number>(150000);
   const [room_number, setRoomNumber] = useState('');
+  const [properties, setProperties] = useState<PropertyProps[]>([]);
   const navigate = useNavigate()
 
+  useEffect(() => {
+    const getProperties = async () => {
+      try {
+        const fetchedProperties = await fetchProperties();
+        setProperties(fetchedProperties);
+      } catch (error) {
+        console.error('Failed to fetch properties:', error);
+      }
+    };
+
+    getProperties();
+  }, []);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -21,7 +36,7 @@ const CreateRoom: React.FC = () => {
         },
       });
       if (response.status === 201) {
-        navigate('/houses');
+        navigate('/');
       } else {
         console.log(response.statusText);
       }
@@ -68,8 +83,10 @@ const CreateRoom: React.FC = () => {
             className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">Select a Branch</option>
-            <option value="entebbe">Entebbe</option>
-            <option value="makindye">Makindye</option>
+            {Array.from(new Set(properties.map(property => property.branch)))
+              .map(branch => (
+                <option key={branch} value={branch}>{branch}</option>
+              ))}
           </select>
         </div>
 
