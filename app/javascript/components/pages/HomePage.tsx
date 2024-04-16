@@ -5,6 +5,11 @@ import PageNotFound from "@components/pages/NotFound";
 import PropertyDetails from "@components/pages/PropertyDetails";
 import Dashboard from "@components/pages/Dashboard";
 import Payment from "@components/pages/Payments";
+import { CurrencyDollarIcon } from "@components/Icons/CurrencyDollarIcon";
+import { Cog6ToothIcon } from "@components/Icons/Cog6ToothIcon";
+import { HomeModernIcon } from "@components/Icons/HomeModernIcon";
+import { ArrowRightCircleIcon } from "@components/Icons/ArrowRightCircleIcon";
+import Settings from "./Settings";
 
 const HomePage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -31,7 +36,6 @@ const HomePage = () => {
     });
 
     if (response.ok) {
-      // Handle successful login, e.g., redirect to the home page
       navigate('/login');
     } else {
       console.log(response.statusText);
@@ -44,7 +48,7 @@ const HomePage = () => {
   };
 
   return (
-    <body className="">
+    <main className="flex flex-col bg-gray-100 h-full min-h-screen">
       <nav className="fixed top-0 z-50 w-full bg-blue-700 border-gray-200 dark:bg-gray-800 dark:border-gray-700">
         <div className="container mx-auto flex justify-between items-center">
           <div className="px-3 py-3 lg:px-5 lg:pl-3">
@@ -65,7 +69,7 @@ const HomePage = () => {
           </div>
         </div>
       </nav>
-      <div className="container mx-auto flex">
+      <div className="container mx-auto flex bg-white min-h-screen">
         <aside id="logo-sidebar" className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
           } fixed top-0 bottom-0 z-40 w-64 h-full pt-20 transition-transform bg-white border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700`} aria-label="Sidebar">
           <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
@@ -78,21 +82,25 @@ const HomePage = () => {
               </li>
               <li onClick={() => navigate('/Payments')}>
                 <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                  <svg aria-hidden="true" className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clipRule="evenodd"></path></svg>
+                  <CurrencyDollarIcon />
                   <span className="flex-1 ml-3 whitespace-nowrap">Payments</span>
                 </div>
               </li>
               <li onClick={() => navigate('/property')}>
                 <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
-                  </svg>
+                  <HomeModernIcon />
                   <span className="flex-1 ml-3 whitespace-nowrap">Add Room</span>
+                </div>
+              </li>
+              <li onClick={() => navigate('/settings')}>
+                <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                  <Cog6ToothIcon />
+                  <span className="flex-1 ml-3 whitespace-nowrap">Settings</span>
                 </div>
               </li>
               <li>
                 <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer" onClick={handleClickLogOut}>
-                  <svg aria-hidden="true" className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd"></path></svg>
+                  <ArrowRightCircleIcon />
                   <span className="flex-1 ml-3 whitespace-nowrap">Sign Out</span>
                 </div>
               </li>
@@ -105,6 +113,7 @@ const HomePage = () => {
               <Route path="/" element={<Dashboard />} />
               <Route path="/Payments" element={<Payment />} />
               <Route path="/property" element={<CreateRoom />} />
+              <Route path="/settings" element={<Settings />} />
               <Route path="/details/:propertyId" element={<PropertyDetails />} />
 
               <Route path="/*" element={<PageNotFound />} />
@@ -112,12 +121,12 @@ const HomePage = () => {
           </div>
         </main>
       </div>
-      <footer className="fixed bg-sky-600 text-white py-4 z-50 w-full bottom-0">
+      <footer className="fixed bg-blue-800 text-white py-4 z-50 w-full bottom-0">
         <div className="container mx-auto flex justify-center items-center">
           <p>&copy; 2024 TechMinds Inc </p>
         </div>
       </footer>
-    </body>
+    </main>
   )
 }
 export default HomePage;

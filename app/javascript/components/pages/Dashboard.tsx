@@ -95,10 +95,10 @@ const Dashboard = () => {
                   }}
                   onDoubleClick={() => navigate(`/details/${property.id}`)}
                   key={property.id}
-                  className="cursor-pointer border p-4 rounded-lg shadow-sm bg-white dark:bg-gray-800 dark:border-gray-700">
-                  <h3 className="font-semibold text-lg dark:text-white">{`Room ${property.room_number}`}</h3>
-                  <p className="text-gray-600 dark:text-gray-400">Details about the property...</p>
-                  <p className="text-gray-600 dark:text-gray-400">{`Status: ${property.status}, Branch: ${property.branch}`}</p>
+                  className={`cursor-pointer border p-4 rounded-lg shadow-sm ${property.status === 'occupied' ? 'bg-red-500' : 'bg-green-500'} dark:bg-gray-800 dark:border-gray-700`}>
+                  <h3 className="font-semibold text-lg text-white">{`Room ${property.room_number}`}</h3>
+                  <p className="text-white">{`Branch :${property.branch}`}</p>
+                  <p className="text-white">{`Status: ${property.status}`}</p>
                 </div>
               ))}
             {isModalOpen && selectedProperty && (
@@ -107,8 +107,8 @@ const Dashboard = () => {
           </div>
 
           <div className="mt-6">
-            <div className="flex justify-around">
-              <button type="button" className="px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-md">Occupied: {occupiedCount}</button>
+            <div className="flex space-x-4">
+              <button type="button" className="px-4 py-2 text-sm font-medium text-white bg-red-700 rounded-md">Occupied: {occupiedCount}</button>
               <button type="button" className="px-4 py-2 text-sm font-medium text-white bg-green-700 rounded-md">Vacant: {vacantCount}</button>
             </div>
           </div>
