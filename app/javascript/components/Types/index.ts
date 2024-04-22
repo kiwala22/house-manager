@@ -32,3 +32,9 @@ export interface UpdatePaymentProps {
   updatePayment: (payment: PaymentProps) => void;
 }
 
+export interface ConfirmDeleteModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+}
+

@@ -5,12 +5,13 @@ import { PaymentProps } from '@components/Types';
 import { getAllPayments } from '@components/Api';
 import axiosInstance from '@components/Api/axiosInstance.tsaxiosInstance';
 import LoadingIndicator from '@components/LoadingIndicator';
-import { useNavigate } from 'react-router-dom';
+import { ConfirmDeleteModal } from '@components/pages/ConfirmModal';
 
 const Payment = () => {
   const [payments, setPayments] = useState<PaymentProps[]>([]);
   const [IsLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+
 
   // Function to add a new payment to the local state, triggered after a payment is successfully created in the Modal.
   const addPayment = (newPayment: PaymentProps) => {
@@ -45,6 +46,7 @@ const Payment = () => {
       await axiosInstance.delete(`/payments/${id}`);
       // Update the payments state by filtering out the deleted payment.
       setPayments((currentPayments) => currentPayments.filter((payment) => payment.id !== id));
+      setDeleteModalOpen(false);
     } catch (error) {
       console.error('Error deleting payment:', error);
     }
@@ -91,7 +93,14 @@ const Payment = () => {
                       <td className="py-4 px-6">{payment.property.room_number}</td>
                       <td className="py-4 px-6">{payment.date_range.replace('...', ' to ')}</td>
                       <td className="py-4 px-6">
-                        <a href="#!" onClick={() => deletePayment(payment.id)} className="text-red-600 dark:text-red-500 hover:underline">Delete</a>
+                        <div>
+                          <a href="#!" onClick={() => setDeleteModalOpen(true)} className="text-red-600 dark:text-red-500 hover:underline">Delete</a>
+                          <ConfirmDeleteModal
+                            isOpen={isDeleteModalOpen}
+                            onClose={() => setDeleteModalOpen(false)}
+                            onConfirm={() => deletePayment(payment.id)}
+                          />
+                        </div>
                       </td>
                       <td className="py-4 px-6">
                         <UpdatePayment payment={payment} updatePayment={updatePayment} />
