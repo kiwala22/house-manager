@@ -5,10 +5,12 @@ import { PaymentProps } from '@components/Types';
 import { getAllPayments } from '@components/Api';
 import axiosInstance from '@components/Api/axiosInstance.tsaxiosInstance';
 import LoadingIndicator from '@components/LoadingIndicator';
+import { useNavigate } from 'react-router-dom';
 
 const Payment = () => {
   const [payments, setPayments] = useState<PaymentProps[]>([]);
   const [IsLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   // Function to add a new payment to the local state, triggered after a payment is successfully created in the Modal.
   const addPayment = (newPayment: PaymentProps) => {
@@ -76,7 +78,7 @@ const Payment = () => {
                     <th scope="col" className="py-3 px-6">NIN Number</th>
                     <th scope="col" className="py-3 px-6">Room Number</th>
                     <th scope="col" className="py-3 px-6">Date</th>
-                    <th scope="col" colSpan={2} className="py-3 px-6">Actions</th>
+                    <th scope="col" colSpan={3} className="py-3 px-6">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -93,6 +95,11 @@ const Payment = () => {
                       </td>
                       <td className="py-4 px-6">
                         <UpdatePayment payment={payment} updatePayment={updatePayment} />
+                      </td>
+                      <td className="py-4 px-6">
+                        <a href={`/payments/${payment.id}/download_pdf`} className="font-medium text-green-600 dark:text-green-500 hover:underline" target="_blank" rel="noopener noreferrer">
+                          Download PDF
+                        </a>
                       </td>
                     </tr>
                   ))}

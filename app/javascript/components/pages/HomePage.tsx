@@ -9,12 +9,11 @@ import { CurrencyDollarIcon } from "@components/Icons/CurrencyDollarIcon";
 import { Cog6ToothIcon } from "@components/Icons/Cog6ToothIcon";
 import { HomeModernIcon } from "@components/Icons/HomeModernIcon";
 import { ArrowRightCircleIcon } from "@components/Icons/ArrowRightCircleIcon";
-import Settings from "./Settings";
+import Settings from "@components/pages/Settings";
 
 const HomePage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
   const navigate = useNavigate();
-
   useEffect(() => {
     const handleResize = () => {
       setSidebarOpen(window.innerWidth >= 768)

@@ -14,14 +14,13 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root 'home#index'
+  get 'payments/:id/download_pdf', to: 'payments#download_pdf', as: 'download_pdf_payment', defaults: { format: :pdf }
 
   scope '/', defaults: { format: :json } do
     resources :payments, only: [:index]
 
     resources :properties do
-      resources :payments, shallow: true do
-        resources :receipts, only: [:create]
-      end
+      resources :payments, shallow: true
     end
   end
 

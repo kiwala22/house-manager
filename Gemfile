@@ -80,6 +80,7 @@ end
 gem 'activeadmin'
 gem 'devise'
 gem 'prawn'
+gem 'prawn-table', '~> 0.2.2' # for adding tables to prawn pdfs, -
 
 # Plus integrations with:
 gem 'cancancan'

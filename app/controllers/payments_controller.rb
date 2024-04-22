@@ -2,7 +2,7 @@
 
 class PaymentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_payment, only: %i[show edit update destroy formatted_date_range]
+  before_action :set_payment, only: %i[download_pdf show edit update destroy formatted_date_range]
   before_action :set_property, only: %i[new create]
   before_action :formatted_date_range, only: %i[create update]
 
@@ -25,13 +25,13 @@ class PaymentsController < ApplicationController
   # POST /payments or /payments.json
   def create
     @payment = @property.payments.new(payment_params.merge(
-      user_id: current_user.id,
-      date_range: @formatted_date_range,
-    ))
+                                        user_id: current_user.id,
+                                        date_range: @formatted_date_range
+                                      ))
 
     respond_to do |format|
       if @payment.save
-        format.html { redirect_to payment_url(@payment), notice: "Payment was successfully created." }
+        format.html { redirect_to payment_url(@payment), notice: 'Payment was successfully created.' }
         format.json { render :show, status: :created, location: @payment }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -44,7 +44,7 @@ class PaymentsController < ApplicationController
   def update
     respond_to do |format|
       if @payment.update(payment_params.merge(date_range: @formatted_date_range))
-        format.html { redirect_to payment_url(@payment), notice: "Payment was successfully updated." }
+        format.html { redirect_to payment_url(@payment), notice: 'Payment was successfully updated.' }
         format.json { render :show, status: :ok, location: @payment }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -58,14 +58,22 @@ class PaymentsController < ApplicationController
     @payment.destroy
 
     respond_to do |format|
-      format.html { redirect_to payments_url, notice: "Payment was successfully destroyed." }
+      format.html { redirect_to payments_url, notice: 'Payment was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def download_pdf
+    respond_to do |format|
+      format.pdf do
+        pdf = PdfGenerator.create_payment_pdf(@payment)
+        send_data pdf, filename: "payment_receipt_#{@payment.id}.pdf", type: 'application/pdf', disposition: 'inline'
+      end
     end
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_property
     @property = Property.find(params[:property_id])
   end
@@ -80,7 +88,6 @@ class PaymentsController < ApplicationController
     @formatted_date_range = "[#{date_range_params[:startDate]}, #{date_range_params[:endDate]})"
   end
 
-  # Only allow a list of trusted parameters through.
   def payment_params
     params.require(:payment).permit(:amount, :phone_number, :tenant_name, :nin_number, :property_id,
                                     date_range: %i[startDate endDate])
