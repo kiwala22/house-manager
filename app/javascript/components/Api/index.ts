@@ -12,6 +12,16 @@ export const fetchProperties = async (): Promise<Property[]> => {
   }
 };
 
+export const getPropertyById = async (propertyId: number): Promise<Property> => {
+  try {
+    const response = await axiosInstance.get<Property>(`/properties/${propertyId}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const getAllPayments = async (): Promise<Payment[]> => {
   try {
     const response = await axiosInstance.get<Payment[]>('/payments');

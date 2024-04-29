@@ -9,6 +9,8 @@ export interface PaymentProps {
   property: {
     id: number;
     room_number: string;
+    status: string;
+    branch: string;
   };
 }
 
@@ -21,10 +23,21 @@ export interface PropertyProps {
   id: number;
   room_number: string;
   status: string;
+  price: number;
   user: {
     id: number;
     username: string;
-  }
+  },
+  payments: [
+    {
+      id: number;
+      amount: number;
+      phone_number: string;
+      tenant_name: string;
+      nin_number: string;
+      date_range: string;
+    }
+  ]
 }
 
 export interface UpdatePaymentProps {
@@ -38,3 +51,6 @@ export interface ConfirmDeleteModalProps {
   onConfirm: () => void;
 }
 
+export type RouteParams = {
+  propertyId: string;
+}
