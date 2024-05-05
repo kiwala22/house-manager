@@ -36,6 +36,7 @@ export interface PropertyProps {
       tenant_name: string;
       nin_number: string;
       date_range: string;
+      created_at: string;
     }
   ]
 }
@@ -54,3 +55,13 @@ export interface ConfirmDeleteModalProps {
 export type RouteParams = {
   propertyId: string;
 }
+
+export interface UpdatePropertyModalProps {
+  property: PropertyProps;
+  updateProperty: (property: PropertyProps) => void
+}
+
+export type UpdatePropertyProps = {
+  property: PropertyProps
+  updateProperty: (property: PropertyProps) => void
+};

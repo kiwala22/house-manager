@@ -25,13 +25,14 @@ class PaymentsController < ApplicationController
   # POST /payments or /payments.json
   def create
     @payment = @property.payments.new(payment_params.merge(
-                                        user_id: current_user.id,
-                                        date_range: @formatted_date_range
-                                      ))
+      user_id: current_user.id,
+      date_range: @formatted_date_range,
+    ))
 
     respond_to do |format|
       if @payment.save
-        format.html { redirect_to payment_url(@payment), notice: 'Payment was successfully created.' }
+        @property.update("status": "occupied")
+        format.html { redirect_to payment_url(@payment), notice: "Payment was successfully created." }
         format.json { render :show, status: :created, location: @payment }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -44,7 +45,7 @@ class PaymentsController < ApplicationController
   def update
     respond_to do |format|
       if @payment.update(payment_params.merge(date_range: @formatted_date_range))
-        format.html { redirect_to payment_url(@payment), notice: 'Payment was successfully updated.' }
+        format.html { redirect_to payment_url(@payment), notice: "Payment was successfully updated." }
         format.json { render :show, status: :ok, location: @payment }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -58,7 +59,7 @@ class PaymentsController < ApplicationController
     @payment.destroy
 
     respond_to do |format|
-      format.html { redirect_to payments_url, notice: 'Payment was successfully destroyed.' }
+      format.html { redirect_to payments_url, notice: "Payment was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -67,7 +68,7 @@ class PaymentsController < ApplicationController
     respond_to do |format|
       format.pdf do
         pdf = PdfGenerator.create_payment_pdf(@payment)
-        send_data pdf, filename: "payment_receipt_#{@payment.id}.pdf", type: 'application/pdf', disposition: 'inline'
+        send_data pdf, filename: "payment_receipt_#{@payment.id}.pdf", type: "application/pdf", disposition: "inline"
       end
     end
   end

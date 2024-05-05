@@ -1,6 +1,5 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import CreateRoom from "@components/pages/CreateRoom";
 import PageNotFound from "@components/pages/NotFound";
 import PropertyDetails from "@components/pages/PropertyDetails";
 import Dashboard from "@components/pages/Dashboard";
@@ -10,6 +9,7 @@ import { Cog6ToothIcon } from "@components/Icons/Cog6ToothIcon";
 import { HomeModernIcon } from "@components/Icons/HomeModernIcon";
 import { ArrowRightCircleIcon } from "@components/Icons/ArrowRightCircleIcon";
 import Settings from "@components/pages/Settings";
+import Properties from "@components/pages/Properties";
 
 const HomePage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -85,10 +85,10 @@ const HomePage = () => {
                   <span className="flex-1 ml-3 whitespace-nowrap">Payments</span>
                 </div>
               </li>
-              <li onClick={() => navigate('/property')}>
+              <li onClick={() => navigate('/rooms')}>
                 <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                   <HomeModernIcon />
-                  <span className="flex-1 ml-3 whitespace-nowrap">Add Room</span>
+                  <span className="flex-1 ml-3 whitespace-nowrap">Properties</span>
                 </div>
               </li>
               <li onClick={() => navigate('/settings')}>
@@ -111,7 +111,7 @@ const HomePage = () => {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/Payments" element={<Payment />} />
-              <Route path="/property" element={<CreateRoom />} />
+              <Route path="/rooms" element={<Properties />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/details/:propertyId" element={<PropertyDetails />} />
 

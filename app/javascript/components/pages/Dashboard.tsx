@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchProperties } from "@components/Api";
 import { PropertyProps } from "@components/Types";
-import Modal from "@components/pages/UpdateStatus";
 import LoadingIndicator from "@components/LoadingIndicator";
 
 const Dashboard = () => {
@@ -11,8 +10,6 @@ const Dashboard = () => {
   const [branchFilter, setBranchFilter] = useState('');
   const [occupiedCount, setOccupiedCount] = useState(0);
   const [vacantCount, setVacantCount] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedProperty, setSelectedProperty] = useState<PropertyProps | null>(null);
   const [IsLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -33,22 +30,6 @@ const Dashboard = () => {
 
     getProperties();
   }, []);
-
-  const openModal = (property: PropertyProps) => {
-    setSelectedProperty(property);
-    setIsModalOpen(true);
-  }
-
-  //updating the status of property
-  const updateProperty = (updatedProperty: PropertyProps) => {
-    setProperties((prevProperties) => {
-      const updatedProperties = prevProperties.map(property =>
-        property.id === updatedProperty.id ? updatedProperty : property);
-      setOccupiedCount(updatedProperties.filter(p => p.status === 'occupied').length);
-      setVacantCount(updatedProperties.filter(p => p.status === 'vacant').length);
-      return updatedProperties;
-    });
-  };
 
   return (
     <>
@@ -89,10 +70,6 @@ const Dashboard = () => {
               .filter(property => branchFilter === '' || property.branch === branchFilter)
               .map((property) => (
                 <div
-                  onContextMenu={(e) => {
-                    e.preventDefault();
-                    openModal(property);
-                  }}
                   onDoubleClick={() => navigate(`/details/${property.id}`)}
                   key={property.id}
                   className={`cursor-pointer border p-4 rounded-lg shadow-sm ${property.status === 'occupied' ? 'bg-red-500' : 'bg-green-500'} dark:bg-gray-800 dark:border-gray-700`}>
@@ -101,9 +78,6 @@ const Dashboard = () => {
                   <p className="text-white">{`Status: ${property.status}`}</p>
                 </div>
               ))}
-            {isModalOpen && selectedProperty && (
-              <Modal property={selectedProperty} onClose={() => setIsModalOpen(false)} updateProperty={updateProperty} />
-            )}
           </div>
 
           <div className="mt-6">
@@ -116,7 +90,6 @@ const Dashboard = () => {
       )}
       {IsLoading && <LoadingIndicator />}
     </>
-
   );
 };
 
