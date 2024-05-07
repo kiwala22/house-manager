@@ -3,6 +3,7 @@ import axiosInstance from "@components/Api/axiosInstance.tsaxiosInstance";
 import { PropertyProps } from "@components/Types";
 import { useState, useEffect } from "react";
 import UpdateProperty from "@components/pages/EditProperty";
+import CreateRoom from "@components/pages/CreateRoom";
 
 const Properties = () => {
   const [properties, setProperties] = useState<PropertyProps[]>([]);
@@ -58,9 +59,7 @@ const Properties = () => {
       <div className="overflow-x-auto">
         <div className="flex justify-between items-center px-4 py-3 bg-white shadow-sm border-b border-gray-200">
           <h1 className="text-lg font-semibold text-gray-900">Properties</h1>
-          <button className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-2.5 transition duration-150 ease-in-out dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700" type="button">
-            Add Property
-          </button>
+          <CreateRoom />
         </div>
         <table className="min-w-full bg-white font-[sans-serif]">
           <thead className="whitespace-nowrap">
