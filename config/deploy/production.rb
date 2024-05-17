@@ -12,8 +12,8 @@
 server '104.131.169.32', user: 'deploy', roles: %w[app db web]
 
 
-set :stage, :production
-set :rails_env, :production
+# set :stage, :production
+# set :rails_env, :production
 
 # role-based syntax
 # ==================
