@@ -18,6 +18,10 @@ export interface ModalProps {
   addPayment: (payment: PaymentProps) => void;
 }
 
+export interface CreateRoomModalProps {
+  addProperty: (property: PropertyProps) => void;
+}
+
 export interface PropertyProps {
   branch: string;
   id: number;
@@ -38,7 +42,7 @@ export interface PropertyProps {
       date_range: string;
       created_at: string;
     }
-  ]
+  ],
 }
 
 export interface UpdatePaymentProps {

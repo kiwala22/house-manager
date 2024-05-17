@@ -1,9 +1,9 @@
 import { fetchProperties } from "@components/Api";
 import axiosInstance from "@components/Api/axiosInstance.tsaxiosInstance";
-import { PropertyProps } from "@components/Types";
+import { CreateRoomModalProps, PropertyProps } from "@components/Types";
 import { useEffect, useState } from "react";
 
-const CreateRoom: React.FC = () => {
+const CreateRoom: React.FC<CreateRoomModalProps> = ({ addProperty }) => {
   const [branch, setBranch] = useState('');
   const [price, setPrice] = useState<number>(150000);
   const [room_number, setRoomNumber] = useState('');
@@ -39,6 +39,7 @@ const CreateRoom: React.FC = () => {
       });
       if (response.status === 201) {
         setIsOpen(false);
+        addProperty(response.data);
         console.log(response.data)
       } else {
         console.log(response.statusText);

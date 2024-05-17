@@ -32,6 +32,5 @@
   },
   "devDependencies": {
     "@types/react-datepicker": "^6.0.3"
-  },
-  "proxy": "http: //104.131.169.32"
+  }
 }

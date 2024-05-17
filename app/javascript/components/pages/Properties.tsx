@@ -54,12 +54,17 @@ const Properties = () => {
     setProperties((prevProperties) => prevProperties.map(property => property.id === updatedProperty.id ? updatedProperty : property));
   };
 
+  // Function to add a new payment to the local state, triggered after a payment is successfully created in the Modal.
+  const addProperty = (newProperty: PropertyProps) => {
+    setProperties((prevProperties) => [...prevProperties, newProperty]);
+  };
+
   return (
     <div className="block p-6 rounded-lg bg-gray-100 dark:bg-gray-800">
       <div className="overflow-x-auto">
         <div className="flex justify-between items-center px-4 py-3 bg-white shadow-sm border-b border-gray-200">
           <h1 className="text-lg font-semibold text-gray-900">Properties</h1>
-          <CreateRoom />
+          <CreateRoom addProperty={addProperty} />
         </div>
         <table className="min-w-full bg-white font-[sans-serif]">
           <thead className="whitespace-nowrap">
