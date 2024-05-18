@@ -1,7 +1,6 @@
-import { fetchProperties } from "@components/Api";
 import axiosInstance from "@components/Api/axiosInstance.tsaxiosInstance";
-import { PropertyProps, UpdatePropertyModalProps } from "@components/Types";
-import { useEffect, useState } from "react";
+import { UpdatePropertyModalProps } from "@components/Types";
+import { useState } from "react";
 
 const UpdateProperty: React.FC<UpdatePropertyModalProps> = ({ property, updateProperty }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,23 +8,13 @@ const UpdateProperty: React.FC<UpdatePropertyModalProps> = ({ property, updatePr
   const [status, setStatus] = useState(property.status);
   const [price, setPrice] = useState<number>(property.price);
   const [branch, setBranch] = useState(property.branch);
-  const [properties, setProperties] = useState<PropertyProps[]>([]);
 
   // Toggle the modal's visibility
   const toggleModal = () => setIsOpen(!isOpen);
 
-  useEffect(() => {
-    const getProperties = async () => {
-      try {
-        const fetchedProperties = await fetchProperties();
-        setProperties(fetchedProperties);
-      } catch (error) {
-        console.error('Failed to fetch properties:', error);
-      }
-    };
-
-    getProperties();
-  }, []);
+  // Define static options for branch and status
+  const branchOptions = ['makindye', 'entebbe'];
+  const statusOptions = ['vacant', 'occupied'];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -105,10 +94,9 @@ const UpdateProperty: React.FC<UpdatePropertyModalProps> = ({ property, updatePr
                       onChange={(e) => setBranch(e.target.value)}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                       <option value="">Select Branch</option>
-                      {Array.from(new Set(properties.map(property => property.branch)))
-                        .map(branch => (
-                          <option key={branch} value={branch}>{branch}</option>
-                        ))}
+                      {branchOptions.map((branch, index) => (
+                        <option key={index} value={branch}>{branch}</option>
+                      ))}
                     </select>
                   </div>
                   <div className="col-span-6 sm:col-span-3">
@@ -121,10 +109,9 @@ const UpdateProperty: React.FC<UpdatePropertyModalProps> = ({ property, updatePr
                       onChange={(e) => setStatus(e.target.value)}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                       <option value="">Select Room Status</option>
-                      {Array.from(new Set(properties.map(property => property.status)))
-                        .map(status => (
-                          <option key={status} value={status}>{status}</option>
-                        ))}
+                      {statusOptions.map((status, index) => (
+                        <option key={index} value={status}>{status}</option>
+                      ))}
                     </select>
                   </div>
                   <div className="col-span-6 sm:col-span-3">

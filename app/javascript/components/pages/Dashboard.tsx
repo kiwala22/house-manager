@@ -12,6 +12,9 @@ const Dashboard = () => {
   const [vacantCount, setVacantCount] = useState(0);
   const [IsLoading, setIsLoading] = useState(true);
 
+  // Define static options for branch and status
+  const branchOptions = ['makindye', 'entebbe'];
+
   useEffect(() => {
     const getProperties = async () => {
       try {
@@ -56,10 +59,9 @@ const Dashboard = () => {
                   onChange={e => setBranchFilter(e.target.value)}
                 >
                   <option value="">All Branches</option>
-                  {Array.from(new Set(properties.map(property => property.branch)))
-                    .map(branch => (
-                      <option key={branch} value={branch}>{branch}</option>
-                    ))}
+                  {branchOptions.map((branch, index) => (
+                    <option key={index} value={branch}>{branch}</option>
+                  ))}
                 </select>
               </div>
             </div>

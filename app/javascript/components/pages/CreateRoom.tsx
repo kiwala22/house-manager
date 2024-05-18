@@ -1,28 +1,17 @@
-import { fetchProperties } from "@components/Api";
 import axiosInstance from "@components/Api/axiosInstance.tsaxiosInstance";
-import { CreateRoomModalProps, PropertyProps } from "@components/Types";
-import { useEffect, useState } from "react";
+import { CreateRoomModalProps } from "@components/Types";
+import { useState } from "react";
 
 const CreateRoom: React.FC<CreateRoomModalProps> = ({ addProperty }) => {
   const [branch, setBranch] = useState('');
   const [price, setPrice] = useState<number>(150000);
   const [room_number, setRoomNumber] = useState('');
   const [status, setStatus] = useState('');
-  const [properties, setProperties] = useState<PropertyProps[]>([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    const getProperties = async () => {
-      try {
-        const fetchedProperties = await fetchProperties();
-        setProperties(fetchedProperties);
-      } catch (error) {
-        console.error('Failed to fetch properties:', error);
-      }
-    };
-
-    getProperties();
-  }, []);
+  // Define static options for branch and status
+  const branchOptions = ['makindye', 'entebbe'];
+  const statusOptions = ['vacant', 'occupied'];
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -40,7 +29,7 @@ const CreateRoom: React.FC<CreateRoomModalProps> = ({ addProperty }) => {
       if (response.status === 201) {
         setIsOpen(false);
         addProperty(response.data);
-        console.log(response.data)
+        console.log(response.data);
       } else {
         console.log(response.statusText);
       }
@@ -89,7 +78,7 @@ const CreateRoom: React.FC<CreateRoomModalProps> = ({ addProperty }) => {
                       value={room_number}
                       name="property-name"
                       onChange={(e) => setRoomNumber(e.target.value)}
-                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="Apple Imac 27”" required />
+                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="Room Number" required />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
                     <label htmlFor="branch" className="text-sm font-medium text-gray-900 block mb-2">Branch</label>
@@ -100,10 +89,9 @@ const CreateRoom: React.FC<CreateRoomModalProps> = ({ addProperty }) => {
                       onChange={(e) => setBranch(e.target.value)}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                       <option value="">Select Branch</option>
-                      {Array.from(new Set(properties.map(property => property.branch)))
-                        .map(branch => (
-                          <option key={branch} value={branch}>{branch}</option>
-                        ))}
+                      {branchOptions.map((branch, index) => (
+                        <option key={index} value={branch}>{branch}</option>
+                      ))}
                     </select>
                   </div>
                   <div className="col-span-6 sm:col-span-3">
@@ -116,10 +104,9 @@ const CreateRoom: React.FC<CreateRoomModalProps> = ({ addProperty }) => {
                       onChange={(e) => setStatus(e.target.value)}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                       <option value="">Select Room Status</option>
-                      {Array.from(new Set(properties.map(property => property.status)))
-                        .map(status => (
-                          <option key={status} value={status}>{status}</option>
-                        ))}
+                      {statusOptions.map((status, index) => (
+                        <option key={index} value={status}>{status}</option>
+                      ))}
                     </select>
                   </div>
                   <div className="col-span-6 sm:col-span-3">
@@ -150,5 +137,3 @@ const CreateRoom: React.FC<CreateRoomModalProps> = ({ addProperty }) => {
 };
 
 export default CreateRoom;
-
-

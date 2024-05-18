@@ -1,26 +1,14 @@
-import { useEffect, useState } from 'react';
-import { PropertyProps, UpdatePropertyModalProps } from "@components/Types";
+import { useState } from 'react';
+import { UpdatePropertyModalProps } from "@components/Types";
 import axiosInstance from '@components/Api/axiosInstance.tsaxiosInstance';
-import { fetchProperties } from '@components/Api';
 
 
 const Modal: React.FC<UpdatePropertyModalProps> = ({ property, updateProperty }) => {
   const [status, setStatus] = useState(property.status || '');
-  const [properties, setProperties] = useState<PropertyProps[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    const getProperties = async () => {
-      try {
-        const fetchedProperties = await fetchProperties();
-        setProperties(fetchedProperties);
-      } catch (error) {
-        console.error('Failed to fetch properties:', error);
-      }
-    };
-
-    getProperties();
-  }, []);
+  /// Define static options for status
+  const statusOptions = ['vacant', 'occupied'];
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -103,10 +91,9 @@ const Modal: React.FC<UpdatePropertyModalProps> = ({ property, updateProperty })
                       onChange={(e) => setStatus(e.target.value)}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                       <option value="">Select Room Status</option>
-                      {Array.from(new Set(properties.map(property => property.status)))
-                        .map(branch => (
-                          <option key={branch} value={branch}>{branch}</option>
-                        ))}
+                      {statusOptions.map((status, index) => (
+                        <option key={index} value={status}>{status}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
