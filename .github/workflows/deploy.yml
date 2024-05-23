@@ -1,0 +1,71 @@
+name: Deploy Rails App to Ubuntu VPS
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: house_manager_production
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.2.2
+
+    - name: Install dependencies
+      run: |
+        gem install bundler
+        bundle install
+
+    - name: Build Docker image
+      run: docker build -t myapp:latest .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Rsync files to Ubuntu VPS
+      run: |
+        rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
+        --exclude='.git*' \
+        --exclude='log/*' \
+        --exclude='tmp/*' \
+        ./ deploy@206.189.124.171:/home/deploy/app
+
+    - name: SSH and Deploy
+      run: |
+        ssh -o StrictHostKeyChecking=no deploy@206.189.124.171 << 'EOF'
+          cd /home/deploy/app
+          docker-compose down
+          docker-compose build
+          docker-compose up -d
