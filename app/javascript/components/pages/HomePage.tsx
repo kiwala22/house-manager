@@ -10,6 +10,8 @@ import { HomeModernIcon } from "@components/Icons/HomeModernIcon";
 import { ArrowRightCircleIcon } from "@components/Icons/ArrowRightCircleIcon";
 import Settings from "@components/pages/Settings";
 import Properties from "@components/pages/Properties";
+import Tenants from "@components/pages/Tenants";
+import { UsersIcon } from "@components/Icons/UsersIcon";
 
 const HomePage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -91,6 +93,12 @@ const HomePage = () => {
                   <span className="flex-1 ml-3 whitespace-nowrap">Properties</span>
                 </div>
               </li>
+              <li onClick={() => navigate('/Tenants')}>
+                <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                  <UsersIcon />
+                  <span className="flex-1 ml-3 whitespace-nowrap">Tenants</span>
+                </div>
+              </li>
               <li onClick={() => navigate('/settings')}>
                 <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                   <Cog6ToothIcon />
@@ -112,6 +120,7 @@ const HomePage = () => {
               <Route path="/" element={<Dashboard />} />
               <Route path="/Payments" element={<Payment />} />
               <Route path="/rooms" element={<Properties />} />
+              <Route path="/Tenants" element={<Tenants />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/details/:propertyId" element={<PropertyDetails />} />
 

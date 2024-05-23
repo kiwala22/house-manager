@@ -22,6 +22,10 @@ export interface CreateRoomModalProps {
   addProperty: (property: PropertyProps) => void;
 }
 
+export interface CreateTenantModalProps {
+  addTenant: (tenant: TenantsProps) => void;
+}
+
 export interface PropertyProps {
   branch: string;
   id: number;
@@ -69,3 +73,17 @@ export type UpdatePropertyProps = {
   property: PropertyProps
   updateProperty: (property: PropertyProps) => void
 };
+
+export interface UpdateTenantProps {
+  tenant: TenantsProps;
+  updateTenant: (tenant: TenantsProps) => void;
+}
+
+export interface TenantsProps {
+  id: number,
+  email: string,
+  phone: string,
+  name: string,
+  nin_number: string,
+  status: string
+}

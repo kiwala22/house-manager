@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import Modal from '@components/pages/PaymentModal';
-import UpdatePayment from '@components/pages/UpdatePaymentModal';
+import Modal from '@components/Modals/CreatePaymentModal';
+import UpdatePayment from '@components/Modals/EditPaymentModal';
 import { PaymentProps } from '@components/Types';
 import { getAllPayments } from '@components/Api';
 import axiosInstance from '@components/Api/axiosInstance.tsaxiosInstance';
 import LoadingIndicator from '@components/LoadingIndicator';
-import { ConfirmDeleteModal } from '@components/pages/ConfirmModal';
+import { ConfirmDeleteModal } from '@components/Modals/DeleteConfirmModal';
 
 const Payment = () => {
   const [payments, setPayments] = useState<PaymentProps[]>([]);

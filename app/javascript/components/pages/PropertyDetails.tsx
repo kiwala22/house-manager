@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getPropertyById } from '@components/Api';
 import { PropertyProps, RouteParams } from '@components/Types';
 import LoadingIndicator from '@components/LoadingIndicator';
-import Modal from '@components/pages/UpdateStatus';
+import Modal from '@components/Modals/UpdatePropertyStatus';
 
 const PropertyDetails = () => {
   const { propertyId } = useParams<RouteParams>();

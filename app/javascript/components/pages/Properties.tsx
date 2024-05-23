@@ -2,8 +2,8 @@ import { fetchProperties } from "@components/Api";
 import axiosInstance from "@components/Api/axiosInstance.tsaxiosInstance";
 import { PropertyProps } from "@components/Types";
 import { useState, useEffect } from "react";
-import UpdateProperty from "@components/pages/EditProperty";
-import CreateRoom from "@components/pages/CreateRoom";
+import UpdateProperty from "@components/Modals/EditPropertyModal";
+import CreateRoom from "@components/Modals/CreatePropertyModal";
 
 const Properties = () => {
   const [properties, setProperties] = useState<PropertyProps[]>([]);
