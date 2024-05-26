@@ -38,6 +38,9 @@ jobs:
         gem install bundler
         bundle install
 
+    - name: Precompile assets
+      run: RAILS_ENV=production bundle exec rake assets:precompile
+
     - name: Build Docker image
       run: docker build -t myapp:latest .
 

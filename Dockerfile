@@ -15,13 +15,14 @@ COPY Gemfile Gemfile.lock ./
 
 RUN bundle install
 
-# RUN rake assets:precompile
-
 COPY . .
 
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
+
+# Precompile assets
+RUN RAILS_ENV=production bundle exec rake assets:precompile
 
 EXPOSE 3000
 
