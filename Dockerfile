@@ -22,6 +22,8 @@ RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 
 # Precompile assets
+ARG SECRET_KEY_BASE
+ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
 RUN RAILS_ENV=production bundle exec rake assets:precompile
 
 EXPOSE 3000

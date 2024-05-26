@@ -39,10 +39,10 @@ jobs:
         bundle install
 
     - name: Precompile assets
-      run: RAILS_ENV=production bundle exec rake assets:precompile
+      run: SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }} RAILS_ENV=production bundle exec rake assets:precompile
 
     - name: Build Docker image
-      run: docker build -t myapp:latest .
+      run: docker build --build-arg SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }} -t myapp:latest .
 
   deploy:
     needs: build
