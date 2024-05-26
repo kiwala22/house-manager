@@ -5,6 +5,10 @@ ENV RAILS_LOG_TO_STDOUT=true
 
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev postgresql-client libxslt1-dev libxml2-dev libvips42 libheif1 libpoppler-glib8 libglib2.0-dev tzdata
 
+# Install Node.js and npm (which includes npx)
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+    && apt-get install -y nodejs
+
 # Install Yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
@@ -32,7 +36,9 @@ RUN yarn install
 # Precompile assets
 ARG SECRET_KEY_BASE
 ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
-RUN RAILS_ENV=production bundle exec rake assets:precompile
+RUN npx esbuild usr/src/app/javascript/application.tsx --bundle --loader:.tsx=tsx --loader:.ts=ts --sourcemap --target=es2017 --outdir=usr/src/app/assets/builds --watch
+RUN yarn build:css --watch
+# RUN RAILS_ENV=production bundle exec rails assets:precompile
 
 EXPOSE 3000
 
