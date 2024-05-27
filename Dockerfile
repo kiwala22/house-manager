@@ -32,8 +32,8 @@ ENTRYPOINT ["entrypoint.sh"]
 
 # Install JavaScript dependencies
 RUN yarn install
-
 RUN yarn build
+RUN yarn build:css
 
 # Precompile assets
 ENV SECRET_KEY_BASE="64fd4b8f8bf15d2c9683ae4382c01acfca30424701cf83e9587a721ac34d14b9181fb617a29b5c4210f3ec559df50b2c4a182090b2bacb87042503c5cabaaaf0"
