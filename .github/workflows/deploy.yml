@@ -28,32 +28,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 3.2.2
-
-    - name: Install dependencies
-      run: |
-        gem install bundler
-        bundle install
-    
-    - name: Install Node
-      run: |
-        curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
-        && apt-get install -y nodejs
-
-    - name: Install Yarn
-      run: |
-        curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-        echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-        sudo apt-get update && sudo apt-get install -y yarn
-
-    - name: Precompile assets
-      run: |
-        npx esbuild usr/src/app/javascript/application.tsx --bundle --loader:.tsx=tsx --loader:.ts=ts --sourcemap --target=es2017 --outdir=usr/src/app/assets/builds --watch
-        yarn build:css --watch
-
     - name: Build Docker image
       run: docker build --build-arg SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }} -t myapp:latest .
 

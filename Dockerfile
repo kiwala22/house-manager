@@ -6,7 +6,7 @@ ENV RAILS_LOG_TO_STDOUT=true
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev postgresql-client libxslt1-dev libxml2-dev libvips42 libheif1 libpoppler-glib8 libglib2.0-dev tzdata
 
 # Install Node.js and npm (which includes npx)
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
 # Install Yarn
@@ -33,14 +33,13 @@ ENTRYPOINT ["entrypoint.sh"]
 # Install JavaScript dependencies
 RUN yarn install
 
+RUN yarn build
+
 # Precompile assets
 ARG SECRET_KEY_BASE
 ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
-RUN npx esbuild usr/src/app/javascript/application.tsx --bundle --loader:.tsx=tsx --loader:.ts=ts --sourcemap --target=es2017 --outdir=usr/src/app/assets/builds --watch
-RUN yarn build:css --watch
-# RUN RAILS_ENV=production bundle exec rails assets:precompile
+RUN RAILS_ENV=production bundle exec rails assets:precompile
 
 EXPOSE 3000
 
-# CMD ["bundle", "exec", "rails", "server"]
 CMD ["rails", "server", "-b", "0.0.0.0"]
