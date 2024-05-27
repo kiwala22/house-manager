@@ -53,8 +53,6 @@ jobs:
         ./ deploy@78.46.141.42:/home/deploy/app
 
     - name: SSH and Deploy
-      env:
-        SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
       run: |
         ssh -o StrictHostKeyChecking=no deploy@78.46.141.42 << 'EOF'
           cd /home/deploy/app
