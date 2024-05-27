@@ -22,6 +22,9 @@ RUN gem install bundler -v 2.4.10
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
+# Precompile assets
+RUN RAILS_ENV=production bundle exec rails assets:precompile
+
 # Copy application code
 COPY . .
 
@@ -30,11 +33,8 @@ COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 
-# Precompile assets
-RUN RAILS_ENV=production bundle exec rails assets:precompile
-
 # Expose port
-EXPOSE 80
+EXPOSE 3000
 
 # Start the Rails server
 CMD ["rails", "server", "-b", "0.0.0.0"]
