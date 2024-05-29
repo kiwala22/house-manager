@@ -8,7 +8,7 @@ class Tenant < ApplicationRecord
 
   validates :name, presence: true
   validates :phone, presence: true
-  validates :nin_number, presence: true
+  validates :ninNumber, presence: true
 
   enum status: { Active: 0, Inactive: 1 }
   scope :ordered, -> { order(id: :desc) }

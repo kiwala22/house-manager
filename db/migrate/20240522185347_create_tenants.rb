@@ -6,7 +6,7 @@ class CreateTenants < ActiveRecord::Migration[7.0]
       t.string :name, null: false
       t.string :email
       t.string :phone
-      t.string :nin_number, null: false
+      t.string :ninNumber, null: false
       t.integer :status, null: false, default: 1
 
       t.timestamps

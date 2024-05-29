@@ -1,12 +1,12 @@
 import { getAllTenants } from "@components/Api";
-import { TenantsProps } from "@components/Types";
+import { Tenant } from "@components/Types";
 import { useState, useEffect } from "react";
 import axiosInstance from "@components/Api/axiosInstance.tsaxiosInstance";
 import UpdateTenant from "@components/Modals/EditTenantModal";
 import CreateTenant from "@components/Modals/CreateTenantModal";
 
 const Tenants = () => {
-  const [tenants, setTenants] = useState<TenantsProps[]>([]);
+  const [tenants, setTenants] = useState<Tenant[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [tenantsPerPage, setTenantsPerPage] = useState(10);
 
@@ -16,7 +16,7 @@ const Tenants = () => {
         const fetchedTenants = await getAllTenants();
         setTenants(fetchedTenants);
       } catch (error) {
-        console.error('Failed to fetch properties:', error);
+        console.error('Failed to fetch tenants:', error);
       }
     };
 
@@ -52,12 +52,12 @@ const Tenants = () => {
     }
   };
 
-  const updateTenant = (updatedTenant: TenantsProps) => {
+  const updateTenant = (updatedTenant: Tenant) => {
     setTenants((prevTenants) => prevTenants.map(tenant => tenant.id === updatedTenant.id ? updatedTenant : tenant));
   };
 
   // Function to add a new payment to the local state, triggered after a payment is successfully created in the Modal.
-  const addTenant = (newTenant: TenantsProps) => {
+  const addTenant = (newTenant: Tenant) => {
     setTenants((prevTenants) => [newTenant, ...prevTenants]);
   };
 
@@ -82,7 +82,7 @@ const Tenants = () => {
             {currentTenants.map(tenant => (
               <tr className="odd:bg-blue-50">
                 <td className="px-6 py-4 text-sm">{tenant.name}</td>
-                <td className="px-6 py-4 text-sm">{tenant.nin_number}</td>
+                <td className="px-6 py-4 text-sm">{tenant.ninNumber}</td>
                 <td className="px-6 py-4 text-sm">{tenant.phone}</td>
                 <td className="px-6 py-4">
                   <span className={`inline-block ${tenant.status === 'inactive' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'} rounded-full px-3 py-1 text-center shadow-md text-xs`}>

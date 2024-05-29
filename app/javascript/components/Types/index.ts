@@ -1,57 +1,21 @@
-
-export interface PaymentProps {
+// Payment Types
+export interface Payment {
   id: number;
   amount: number;
-  phone_number: string;
-  tenant_name: string;
-  nin_number: string;
-  date_range: string;
-  property: {
-    id: number;
-    room_number: string;
-    status: string;
-    branch: string;
-  };
+  phoneNumber: string;
+  tenantName: string;
+  ninNumber: string;
+  dateRange: string;
+  property: Property;
 }
 
 export interface ModalProps {
-  addPayment: (payment: PaymentProps) => void;
+  addPayment: (payment: Payment) => void;
 }
 
-export interface CreateRoomModalProps {
-  addProperty: (property: PropertyProps) => void;
-}
-
-export interface CreateTenantModalProps {
-  addTenant: (tenant: TenantsProps) => void;
-}
-
-export interface PropertyProps {
-  branch: string;
-  id: number;
-  room_number: string;
-  status: string;
-  price: number;
-  user: {
-    id: number;
-    username: string;
-  },
-  payments: [
-    {
-      id: number;
-      amount: number;
-      phone_number: string;
-      tenant_name: string;
-      nin_number: string;
-      date_range: string;
-      created_at: string;
-    }
-  ],
-}
-
-export interface UpdatePaymentProps {
-  payment: PaymentProps;
-  updatePayment: (payment: PaymentProps) => void;
+export interface UpdatePaymentModalProps {
+  payment: Payment;
+  updatePayment: (payment: Payment) => void;
 }
 
 export interface ConfirmDeleteModalProps {
@@ -60,30 +24,63 @@ export interface ConfirmDeleteModalProps {
   onConfirm: () => void;
 }
 
-export type RouteParams = {
-  propertyId: string;
+// Property Types
+export interface Property {
+  id: number;
+  roomNumber: string;
+  status: string;
+  branch: string;
+  price: number;
+  user: User;
+  payments: Payment[];
+  rental: Rental;
+}
+
+export interface User {
+  id: number;
+  username: string;
+}
+
+export interface CreatePropertyModalProps {
+  addProperty: (property: Property) => void;
 }
 
 export interface UpdatePropertyModalProps {
-  property: PropertyProps;
-  updateProperty: (property: PropertyProps) => void
+  property: Property;
+  updateProperty: (property: Property) => void;
 }
 
-export type UpdatePropertyProps = {
-  property: PropertyProps
-  updateProperty: (property: PropertyProps) => void
-};
-
-export interface UpdateTenantProps {
-  tenant: TenantsProps;
-  updateTenant: (tenant: TenantsProps) => void;
+// Tenant Types
+export interface Tenant {
+  id: number;
+  email: string;
+  phone: string;
+  name: string;
+  ninNumber: string;
+  status: string;
 }
 
-export interface TenantsProps {
-  id: number,
-  email: string,
-  phone: string,
-  name: string,
-  nin_number: string,
-  status: string
+export interface CreateTenantModalProps {
+  addTenant: (tenant: Tenant) => void;
+}
+
+export interface UpdateTenantModalProps {
+  tenant: Tenant;
+  updateTenant: (tenant: Tenant) => void;
+}
+
+// Route Params Types
+export type RouteParams = {
+  propertyId: string;
+  rentalId: string;
+}
+
+// Rentals Types
+export interface Rental {
+  id: number;
+  deposit: number;
+  start_date: Date;
+  end_date: Date;
+  property: Property;
+  tenant: Tenant;
 }

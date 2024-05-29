@@ -1,10 +1,10 @@
 import axiosInstance from "@components/Api/axiosInstance.tsaxiosInstance";
-import { UpdateTenantProps } from "@components/Types";
+import { UpdateTenantModalProps } from "@components/Types";
 import { useState } from "react";
 
-const UpdateTenant: React.FC<UpdateTenantProps> = ({ tenant, updateTenant }) => {
+const UpdateTenant: React.FC<UpdateTenantModalProps> = ({ tenant, updateTenant }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [nin_number, setNinNumber] = useState(tenant.nin_number);
+  const [ninNumber, setNinNumber] = useState(tenant.ninNumber);
   const [status, setStatus] = useState(tenant.status);
   const [name, setName] = useState(tenant.name);
   const [phone, setPhone] = useState(tenant.phone);
@@ -13,7 +13,7 @@ const UpdateTenant: React.FC<UpdateTenantProps> = ({ tenant, updateTenant }) => 
   const toggleModal = () => setIsOpen(!isOpen);
 
   // Define static options for branch and status
-  const statusOptions = ['active', 'inactive'];
+  const statusOptions = ['Active', 'Inactive'];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,7 +22,7 @@ const UpdateTenant: React.FC<UpdateTenantProps> = ({ tenant, updateTenant }) => 
     try {
       const response = await axiosInstance.patch(path, {
         tenant: {
-          nin_number,
+          ninNumber,
           status,
           name,
           phone,
@@ -89,7 +89,7 @@ const UpdateTenant: React.FC<UpdateTenantProps> = ({ tenant, updateTenant }) => 
                     <input
                       id="nin_number"
                       type="text"
-                      value={nin_number}
+                      value={ninNumber}
                       name="nin_number"
                       onChange={(e) => setNinNumber(e.target.value)}
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="Apple Imac 27”" required />

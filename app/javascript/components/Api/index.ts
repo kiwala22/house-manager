@@ -1,9 +1,9 @@
-import { PaymentProps, PropertyProps, TenantsProps } from "@components/Types";
+import { Payment, Property, Rental, Tenant } from "@components/Types";
 import axiosInstance from "./axiosInstance.tsaxiosInstance";
 
-export const fetchProperties = async (): Promise<PropertyProps[]> => {
+export const fetchProperties = async (): Promise<Property[]> => {
   try {
-    const response = await axiosInstance.get<PropertyProps[]>('/properties');
+    const response = await axiosInstance.get<Property[]>('/properties');
     return response.data;
   } catch (error) {
     console.error(error);
@@ -11,9 +11,9 @@ export const fetchProperties = async (): Promise<PropertyProps[]> => {
   }
 };
 
-export const getPropertyById = async (propertyId: number): Promise<PropertyProps> => {
+export const getPropertyById = async (propertyId: number): Promise<Property> => {
   try {
-    const response = await axiosInstance.get<PropertyProps>(`/properties/${propertyId}`);
+    const response = await axiosInstance.get<Property>(`/properties/${propertyId}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -21,9 +21,9 @@ export const getPropertyById = async (propertyId: number): Promise<PropertyProps
   }
 };
 
-export const getAllPayments = async (): Promise<PaymentProps[]> => {
+export const getAllPayments = async (): Promise<Payment[]> => {
   try {
-    const response = await axiosInstance.get<PaymentProps[]>('/payments');
+    const response = await axiosInstance.get<Payment[]>('/payments');
     return response.data
   } catch (error) {
     console.error(error);
@@ -31,12 +31,24 @@ export const getAllPayments = async (): Promise<PaymentProps[]> => {
   }
 }
 
-export const getAllTenants = async (): Promise<TenantsProps[]> => {
+export const getAllTenants = async (): Promise<Tenant[]> => {
   try {
-    const response = await axiosInstance.get<TenantsProps[]>('/tenants');
+    const response = await axiosInstance.get<Tenant[]>('/tenants');
     return response.data
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
+////more work todo here
+export const getRentalByPropertyId = async (propertyId: number): Promise<Rental> => {
+  try {
+    const response = await axiosInstance.get<Rental>(`/properties/${propertyId}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+

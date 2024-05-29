@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class RentalsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_rental, only: [:show, :edit, :update, :destroy]
+  before_action :set_rental, only: %i[show edit update destroy]
 
   # GET /rentals
   def index
-    @rentals = current_user.rentals
+    @rentals = Rental.includes(:property, :tenant).all
   end
 
   # GET /rentals/1
@@ -17,15 +19,15 @@ class RentalsController < ApplicationController
   end
 
   # GET /rentals/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /rentals
   def create
     @rental = current_user.rentals.build(rental_params)
 
     if @rental.save
-      redirect_to @rental, notice: "Rental was successfully created."
+      @rental.property.update(status: 'occupied')
+      redirect_to @rental, notice: 'Rental was successfully created.'
     else
       render :new
     end
@@ -34,7 +36,7 @@ class RentalsController < ApplicationController
   # PATCH/PUT /rentals/1
   def update
     if @rental.update(rental_params)
-      redirect_to @rental, notice: "Rental was successfully updated."
+      redirect_to @rental, notice: 'Rental was successfully updated.'
     else
       render :edit
     end
@@ -43,7 +45,7 @@ class RentalsController < ApplicationController
   # DELETE /rentals/1
   def destroy
     @rental.destroy
-    redirect_to rentals_url, notice: "Rental was successfully destroyed."
+    redirect_to rentals_url, notice: 'Rental was successfully destroyed.'
   end
 
   private
@@ -55,6 +57,6 @@ class RentalsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def rental_params
-    params.require(:rental).permit(:tenant_id, :property_id, :start_date, :end_date)
+    params.require(:rental).permit(:tenant_id, :property_id, :deposit, :start_date, :end_date)
   end
 end

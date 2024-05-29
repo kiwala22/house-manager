@@ -11,7 +11,8 @@ class PropertiesController < ApplicationController
 
   # GET /properties/1 or /properties/1.json
   def show
-    @property = Property.includes(:payments).find(params[:id])
+    # @property = Property.includes(:rentals).find(params[:id])
+    @current_rental = @property.current_rental_with_tenant
   end
 
   # GET /properties/new
@@ -69,6 +70,6 @@ class PropertiesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def property_params
-    params.require(:property).permit(:branch, :price, :status, :room_number)
+    params.require(:property).permit(:branch, :price, :status, :roomNumber)
   end
 end

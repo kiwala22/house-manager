@@ -1,7 +1,6 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import PageNotFound from "@components/pages/NotFound";
-import PropertyDetails from "@components/pages/PropertyDetails";
 import Dashboard from "@components/pages/Dashboard";
 import Payment from "@components/pages/Payments";
 import { CurrencyDollarIcon } from "@components/Icons/CurrencyDollarIcon";
@@ -12,6 +11,8 @@ import Settings from "@components/pages/Settings";
 import Properties from "@components/pages/Properties";
 import Tenants from "@components/pages/Tenants";
 import { UsersIcon } from "@components/Icons/UsersIcon";
+import RentalDetails from "@components/pages/RentalDetails";
+import { RectangleGroupIcon } from "@components/Icons/RectangleGroupIcon";
 
 const HomePage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -76,37 +77,38 @@ const HomePage = () => {
           <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
             <ul className="space-y-2 font-medium">
               <li onClick={() => navigate('/')}>
-                <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                  <svg aria-hidden="true" className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
+                <div className="flex  items-center p-2 text-black hover:text-blue-600 text-[15px] hover:bg-blue-50 rounded px-4 py-2.5 transition-all cursor-pointer">
+                  <RectangleGroupIcon />
                   <span className="ml-3">Dashboard</span>
                 </div>
               </li>
               <li onClick={() => navigate('/Payments')}>
-                <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                <div className="flex items-center p-2 text-black hover:text-blue-600 text-[15px]  hover:bg-blue-50 rounded px-4 py-2.5 transition-all cursor-pointer">
                   <CurrencyDollarIcon />
                   <span className="flex-1 ml-3 whitespace-nowrap">Payments</span>
                 </div>
               </li>
               <li onClick={() => navigate('/rooms')}>
-                <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                <div className="flex items-center p-2 text-black hover:text-blue-600 text-[15px] hover:bg-blue-50 rounded px-4 py-2.5 transition-all cursor-pointer">
                   <HomeModernIcon />
                   <span className="flex-1 ml-3 whitespace-nowrap">Properties</span>
                 </div>
               </li>
               <li onClick={() => navigate('/Tenants')}>
-                <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                <div className="flex items-center p-2 text-black hover:text-blue-600 text-[15px] hover:bg-blue-50 rounded px-4 py-2.5 transition-all cursor-pointer">
                   <UsersIcon />
                   <span className="flex-1 ml-3 whitespace-nowrap">Tenants</span>
                 </div>
               </li>
               <li onClick={() => navigate('/settings')}>
-                <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                <div className="flex items-center p-2 text-black hover:text-blue-600 text-[15px] hover:bg-blue-50 rounded px-4 py-2.5 transition-all cursor-pointer">
                   <Cog6ToothIcon />
                   <span className="flex-1 ml-3 whitespace-nowrap">Settings</span>
                 </div>
               </li>
               <li>
-                <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer" onClick={handleClickLogOut}>
+                <div className="flex items-center p-2 text-black hover:text-blue-600 text-[15px]  hover:bg-blue-50 rounded px-4 py-2.5 transition-all cursor-pointer"
+                  onClick={handleClickLogOut}>
                   <ArrowRightCircleIcon />
                   <span className="flex-1 ml-3 whitespace-nowrap">Sign Out</span>
                 </div>
@@ -122,7 +124,7 @@ const HomePage = () => {
               <Route path="/rooms" element={<Properties />} />
               <Route path="/Tenants" element={<Tenants />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/details/:propertyId" element={<PropertyDetails />} />
+              <Route path="/details/:propertyId" element={<RentalDetails />} />
 
               <Route path="/*" element={<PageNotFound />} />
             </Routes>

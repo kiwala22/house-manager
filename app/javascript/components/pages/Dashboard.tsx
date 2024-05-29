@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchProperties } from "@components/Api";
-import { PropertyProps } from "@components/Types";
+import { Property } from "@components/Types";
 import LoadingIndicator from "@components/LoadingIndicator";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [properties, setProperties] = useState<PropertyProps[]>([]);
+  const [properties, setProperties] = useState<Property[]>([]);
   const [branchFilter, setBranchFilter] = useState('');
   const [occupiedCount, setOccupiedCount] = useState(0);
   const [vacantCount, setVacantCount] = useState(0);
@@ -75,7 +75,7 @@ const Dashboard = () => {
                   onDoubleClick={() => navigate(`/details/${property.id}`)}
                   key={property.id}
                   className={`cursor-pointer border p-4 rounded-lg shadow-sm ${property.status === 'occupied' ? 'bg-red-500' : 'bg-green-500'} dark:bg-gray-800 dark:border-gray-700`}>
-                  <h3 className="font-semibold text-lg text-white">{`Room ${property.room_number}`}</h3>
+                  <h3 className="font-semibold text-lg text-white">{`Room ${property.roomNumber}`}</h3>
                   <p className="text-white">{`Branch :${property.branch}`}</p>
                   <p className="text-white">{`Status: ${property.status}`}</p>
                 </div>

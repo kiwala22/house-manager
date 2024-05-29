@@ -6,7 +6,7 @@ class CreateProperties < ActiveRecord::Migration[7.0]
       t.integer :branch, null: false, default: 1
       t.integer :price
       t.integer :status, null: false, default: 1
-      t.string :room_number
+      t.string :roomNumber
 
       # Foreign key
       t.references :user, null: false, foreign_key: true

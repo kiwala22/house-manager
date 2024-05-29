@@ -1,11 +1,11 @@
 import axiosInstance from "@components/Api/axiosInstance.tsaxiosInstance";
-import { CreateRoomModalProps } from "@components/Types";
+import { CreatePropertyModalProps } from "@components/Types";
 import { useState } from "react";
 
-const CreateRoom: React.FC<CreateRoomModalProps> = ({ addProperty }) => {
+const CreateRoom: React.FC<CreatePropertyModalProps> = ({ addProperty }) => {
   const [branch, setBranch] = useState('');
   const [price, setPrice] = useState<number>(150000);
-  const [room_number, setRoomNumber] = useState('');
+  const [roomNumber, setRoomNumber] = useState('');
   const [status, setStatus] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
@@ -22,7 +22,7 @@ const CreateRoom: React.FC<CreateRoomModalProps> = ({ addProperty }) => {
         property: {
           branch,
           price,
-          room_number,
+          roomNumber,
           status
         },
       });
@@ -75,7 +75,7 @@ const CreateRoom: React.FC<CreateRoomModalProps> = ({ addProperty }) => {
                     <input
                       id="property-name"
                       type="text"
-                      value={room_number}
+                      value={roomNumber}
                       name="property-name"
                       onChange={(e) => setRoomNumber(e.target.value)}
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="Room Number" required />

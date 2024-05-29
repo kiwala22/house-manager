@@ -14,14 +14,16 @@ Rails.application.routes.draw do
   get "payments/:id/download_pdf", to: "payments#download_pdf", as: "download_pdf_payment", defaults: { format: :pdf }
 
   scope "/", defaults: { format: :json } do
-    resources :rentals
-
-    resources :tenants do
-      resources :payments, shallow: true
-    end
+    resources :rentals, only: [:index, :show]
     resources :payments, only: [:index]
 
+    resources :tenants do
+      resources :rentals, shallow: true
+      resources :payments, shallow: true
+    end
+
     resources :properties do
+      resources :rentals
       resources :payments, shallow: true
     end
   end

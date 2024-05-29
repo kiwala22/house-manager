@@ -1,12 +1,12 @@
 import { fetchProperties } from "@components/Api";
 import axiosInstance from "@components/Api/axiosInstance.tsaxiosInstance";
-import { PropertyProps } from "@components/Types";
+import { Property } from "@components/Types";
 import { useState, useEffect } from "react";
 import UpdateProperty from "@components/Modals/EditPropertyModal";
 import CreateRoom from "@components/Modals/CreatePropertyModal";
 
 const Properties = () => {
-  const [properties, setProperties] = useState<PropertyProps[]>([]);
+  const [properties, setProperties] = useState<Property[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [propertiesPerPage, setPropertiesPerPage] = useState(10);
 
@@ -50,12 +50,12 @@ const Properties = () => {
     }
   };
 
-  const updateProperty = (updatedProperty: PropertyProps) => {
+  const updateProperty = (updatedProperty: Property) => {
     setProperties((prevProperties) => prevProperties.map(property => property.id === updatedProperty.id ? updatedProperty : property));
   };
 
   // Function to add a new payment to the local state, triggered after a payment is successfully created in the Modal.
-  const addProperty = (newProperty: PropertyProps) => {
+  const addProperty = (newProperty: Property) => {
     setProperties((prevProperties) => [...prevProperties, newProperty]);
   };
 
@@ -79,7 +79,7 @@ const Properties = () => {
           <tbody className="whitespace-nowrap">
             {currentProperties.map(property => (
               <tr className="odd:bg-blue-50">
-                <td className="px-6 py-4 text-sm">{property.room_number}</td>
+                <td className="px-6 py-4 text-sm">{property.roomNumber}</td>
                 <td className="px-6 py-4 text-sm">{property.branch}</td>
                 <td className="px-6 py-4 text-sm">Ugx {property.price}</td>
                 <td className="px-6 py-4">

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const UpdateProperty: React.FC<UpdatePropertyModalProps> = ({ property, updateProperty }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [room_number, setRoomNumber] = useState(property.room_number);
+  const [roomNumber, setRoomNumber] = useState(property.roomNumber);
   const [status, setStatus] = useState(property.status);
   const [price, setPrice] = useState<number>(property.price);
   const [branch, setBranch] = useState(property.branch);
@@ -23,7 +23,7 @@ const UpdateProperty: React.FC<UpdatePropertyModalProps> = ({ property, updatePr
     try {
       const response = await axiosInstance.patch(path, {
         property: {
-          room_number,
+          roomNumber,
           status,
           price,
           branch,
@@ -80,7 +80,7 @@ const UpdateProperty: React.FC<UpdatePropertyModalProps> = ({ property, updatePr
                     <input
                       id="property-name"
                       type="text"
-                      value={room_number}
+                      value={roomNumber}
                       name="property-name"
                       onChange={(e) => setRoomNumber(e.target.value)}
                       className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="Apple Imac 27”" required />
