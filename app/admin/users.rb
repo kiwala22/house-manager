@@ -18,8 +18,6 @@ ActiveAdmin.register User do
   filter :username
   filter :role
   filter :current_sign_in_at
-  filter :sign_in_count
-  filter :created_at
 
   form do |f|
     f.inputs do
