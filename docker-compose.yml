@@ -20,6 +20,8 @@ services:
       - "3000:3000/tcp"
     depends_on:
       - db
+    links:
+      - "db:database"
     environment:
       DATABASE_USERNAME: postgres
       DATABASE_HOST: db

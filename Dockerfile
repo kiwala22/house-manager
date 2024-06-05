@@ -31,7 +31,7 @@ COPY . .
 # Setup entrypoint
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 
 # Expose port
 EXPOSE 3000
