@@ -83,6 +83,7 @@ const CreateRoom: React.FC<CreatePropertyModalProps> = ({ addProperty }) => {
                   <div className="col-span-6 sm:col-span-3">
                     <label htmlFor="branch" className="text-sm font-medium text-gray-900 block mb-2">Branch</label>
                     <select
+                      required
                       id="branch"
                       name="branch"
                       value={branch}

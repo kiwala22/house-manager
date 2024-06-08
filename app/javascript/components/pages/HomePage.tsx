@@ -1,18 +1,19 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import PageNotFound from "@components/pages/NotFound";
+import PageNotFound from "@components/pages/NotFoundPage";
 import Dashboard from "@components/pages/Dashboard";
-import Payment from "@components/pages/Payments";
+import Payment from "@components/pages/PaymentsPage";
 import { CurrencyDollarIcon } from "@components/Icons/CurrencyDollarIcon";
 import { Cog6ToothIcon } from "@components/Icons/Cog6ToothIcon";
 import { HomeModernIcon } from "@components/Icons/HomeModernIcon";
 import { ArrowRightCircleIcon } from "@components/Icons/ArrowRightCircleIcon";
-import Settings from "@components/pages/Settings";
-import Properties from "@components/pages/Properties";
-import Tenants from "@components/pages/Tenants";
+import Settings from "@components/pages/SettingsPage";
+import Properties from "@components/pages/PropertiesPage";
+import Tenants from "@components/pages/TenantsPage";
 import { UsersIcon } from "@components/Icons/UsersIcon";
-import RentalDetails from "@components/pages/RentalDetails";
+import RentalDetails from "@components/pages/PropertyDetailsPage";
 import { RectangleGroupIcon } from "@components/Icons/RectangleGroupIcon";
+import RentalsPage from "./RentalsPage";
 
 const HomePage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
@@ -100,6 +101,12 @@ const HomePage = () => {
                   <span className="flex-1 ml-3 whitespace-nowrap">Tenants</span>
                 </div>
               </li>
+              <li onClick={() => navigate('/Rentals')}>
+                <div className="flex items-center p-2 text-black hover:text-blue-600 text-[15px] hover:bg-blue-50 rounded px-4 py-2.5 transition-all cursor-pointer">
+                  <UsersIcon />
+                  <span className="flex-1 ml-3 whitespace-nowrap">Rentals</span>
+                </div>
+              </li>
               <li onClick={() => navigate('/settings')}>
                 <div className="flex items-center p-2 text-black hover:text-blue-600 text-[15px] hover:bg-blue-50 rounded px-4 py-2.5 transition-all cursor-pointer">
                   <Cog6ToothIcon />
@@ -123,6 +130,7 @@ const HomePage = () => {
               <Route path="/Payments" element={<Payment />} />
               <Route path="/rooms" element={<Properties />} />
               <Route path="/Tenants" element={<Tenants />} />
+              <Route path="/Rentals" element={<RentalsPage />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/details/:propertyId" element={<RentalDetails />} />
 

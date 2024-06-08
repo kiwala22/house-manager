@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react';
 import Modal from '@components/Modals/CreatePaymentModal';
 import UpdatePayment from '@components/Modals/EditPaymentModal';
-import { PaymentProps } from '@components/Types';
+import { Payment } from '@components/Types';
 import { getAllPayments } from '@components/Api';
 import axiosInstance from '@components/Api/axiosInstance.tsaxiosInstance';
 import LoadingIndicator from '@components/LoadingIndicator';
 import { ConfirmDeleteModal } from '@components/Modals/DeleteConfirmModal';
 
-const Payment = () => {
-  const [payments, setPayments] = useState<PaymentProps[]>([]);
+const Payments = () => {
+  const [payments, setPayments] = useState<Payment[]>([]);
   const [IsLoading, setIsLoading] = useState(true);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
 
   // Function to add a new payment to the local state, triggered after a payment is successfully created in the Modal.
-  const addPayment = (newPayment: PaymentProps) => {
+  const addPayment = (newPayment: Payment) => {
     setPayments((prevPayments) => [newPayment, ...prevPayments]);
   };
 
   //updating payment
-  const updatePayment = (updatedPayment: PaymentProps) => {
+  const updatePayment = (updatedPayment: Payment) => {
     setPayments((prevPayments) => prevPayments.map(payment => payment.id === updatedPayment.id ? updatedPayment : payment));
   };
 
@@ -86,12 +86,10 @@ const Payment = () => {
                 <tbody>
                   {payments.map((payment) => (
                     <tr key={payment.id} className="border-b bg-white dark:bg-gray-800 dark:border-gray-700">
-                      <td className="py-4 px-6">{payment.tenant_name}</td>
-                      <td className="py-4 px-6">{payment.phone_number}</td>
+                      <td className="py-4 px-6">{payment.phoneNumber}</td>
                       <td className="py-4 px-6">Shs {payment.amount}</td>
-                      <td className="py-4 px-6">{payment.nin_number}</td>
-                      <td className="py-4 px-6">{payment.property.room_number}</td>
-                      <td className="py-4 px-6">{payment.date_range.replace('...', ' to ')}</td>
+                      <td className="py-4 px-6">{payment.ninNumber}</td>
+                      <td className="py-4 px-6">{payment.property.roomNumber}</td>
                       <td className="py-4 px-6">
                         <div>
                           <a href="#!" onClick={() => setDeleteModalOpen(true)} className="text-red-600 dark:text-red-500 hover:underline">Delete</a>
@@ -123,4 +121,4 @@ const Payment = () => {
   );
 };
 
-export default Payment;
+export default Payments;

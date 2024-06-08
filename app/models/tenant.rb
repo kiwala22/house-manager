@@ -3,6 +3,7 @@
 class Tenant < ApplicationRecord
   has_many :rentals
   has_many :properties, through: :rentals
+  # has_many :payments, through: :rentals
   has_many :payments
   belongs_to :user
 
