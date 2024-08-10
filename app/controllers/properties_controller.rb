@@ -6,7 +6,7 @@ class PropertiesController < ApplicationController
 
   # GET /properties or /properties.json
   def index
-    @properties = Property.includes(:user, :payments).all.ordered
+    @properties = Property.includes(:user).all.ordered
   end
 
   # GET /properties/1 or /properties/1.json
