@@ -32,7 +32,8 @@ development:
   username: house_manager
 
   # The password associated with the postgres role (username).
-  password: <%= ENV['DATABASE_PASSWORD'] %>
+  # password: <%= ENV['DATABASE_PASSWORD'] %>
+  password: password
 
 
   # Connect on a TCP socket. Omitted by default since the client uses a

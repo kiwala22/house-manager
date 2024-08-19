@@ -85,7 +85,7 @@ const Tenants = () => {
                 <td className="px-6 py-4 text-sm">{tenant.ninNumber}</td>
                 <td className="px-6 py-4 text-sm">{tenant.phone}</td>
                 <td className="px-6 py-4">
-                  <span className={`inline-block ${tenant.status === 'inactive' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'} rounded-full px-3 py-1 text-center shadow-md text-xs`}>
+                  <span className={`inline-block ${tenant.status === 'Inactive' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'} rounded-full px-3 py-1 text-center shadow-md text-xs`}>
                     {tenant.status}
                   </span>
                 </td>
@@ -106,7 +106,7 @@ const Tenants = () => {
           </tbody>
         </table>
         <div className="md:flex mt-4 px-6">
-          <p className="text-sm text-gray-400 flex-1">Showing {indexOfFirstTenant + 1} to {Math.min(indexOfLastTenant, tenants.length)} of {tenants.length} properties</p>
+          <p className="text-sm text-gray-400 flex-1">Showing {indexOfFirstTenant + 1} to {Math.min(indexOfLastTenant, tenants.length)} of {tenants.length} tenants</p>
           <div className="flex items-center max-md:mt-4">
             <p className="text-sm text-gray-400">Display</p>
             <select className="text-sm text-gray-400 border border-gray-400 rounded h-7 mx-4 outline-none" value={tenantsPerPage} onChange={(e) => setTenantsPerPage(Number(e.target.value))}>

@@ -41,14 +41,23 @@ export const getAllTenants = async (): Promise<Tenant[]> => {
   }
 }
 ////more work todo here
-export const getRentalByPropertyId = async (propertyId: number): Promise<Rental> => {
+// export const getRentalByPropertyId = async (propertyId: number): Promise<Rental> => {
+//   try {
+//     const response = await axiosInstance.get<Rental>(`/properties/${propertyId}`);
+//     console.log(response.data);
+//     return response.data;
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// };
+
+export const getAllRentals = async (): Promise<Rental[]> => {
   try {
-    const response = await axiosInstance.get<Rental>(`/properties/${propertyId}`);
-    console.log(response.data);
-    return response.data;
+    const response = await axiosInstance.get<Rental[]>('/rentals');
+    return response.data
   } catch (error) {
     console.error(error);
     throw error;
   }
-};
-
+}

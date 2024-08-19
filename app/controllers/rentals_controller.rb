@@ -24,28 +24,42 @@ class RentalsController < ApplicationController
   # POST /rentals
   def create
     @rental = current_user.rentals.build(rental_params)
-
-    if @rental.save
-      @rental.property.update(status: 'occupied')
-      redirect_to @rental, notice: 'Rental was successfully created.'
-    else
-      render :new
+  
+    respond_to do |format|
+      if @rental.save
+        @rental.property.update(status: 'occupied')
+        format.html { redirect_to rental_url(@rental), notice: 'Rental was successfully created.' }
+        format.json { render :show, status: :created, location: @rental }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @rental.errors, status: :unprocessable_entity }
+      end
     end
   end
+  
 
   # PATCH/PUT /rentals/1
   def update
-    if @rental.update(rental_params)
-      redirect_to @rental, notice: 'Rental was successfully updated.'
-    else
-      render :edit
+    respond_to do |format|
+      if @rental.update(rental_params)
+        format.html { redirect_to tenant_url(@rental), notice: 'Rental was successfully updated.' }
+        format.json { render :show, status: :ok, location: @rental }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @rental.errors, status: :unprocessable_entity }
+      end
     end
-  end
+  end 
 
   # DELETE /rentals/1
   def destroy
     @rental.destroy
-    redirect_to rentals_url, notice: 'Rental was successfully destroyed.'
+    @rental.property.update(status: 'vacant')
+
+    respond_to do |format|
+      format.html { redirect_to rentals_url, notice: 'Rental was successfully destroyed.' }
+      format.json { head :no_content }
+    end
   end
 
   private

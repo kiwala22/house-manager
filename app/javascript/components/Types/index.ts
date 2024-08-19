@@ -79,8 +79,18 @@ export type RouteParams = {
 export interface Rental {
   id: number;
   deposit: number;
-  start_date: Date;
-  end_date: Date;
+  start_date: string;
+  end_date: string;
   property: Property;
   tenant: Tenant;
+  active: boolean;
+}
+
+export interface UpdateRentalModalProps {
+  rental: Rental;
+  updateRental: (rental: Rental) => void;
+}
+
+export interface CreateRentalModalProps {
+  addRental: (rental: Rental) => void;
 }

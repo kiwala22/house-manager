@@ -128,7 +128,7 @@ const CreateRoom: React.FC<CreatePropertyModalProps> = ({ addProperty }) => {
                 onClick={() => setIsOpen(false)}
                 className="px-6 py-2 rounded-md text-black text-sm border-none outline-none bg-gray-200 hover:bg-gray-300 active:bg-gray-200">Cancel</button>
               <button type="submit" form="form"
-                className="px-6 py-2 rounded-md text-white text-sm border-none outline-none bg-blue-600 hover:bg-blue-700 active:bg-blue-600">Save</button>
+                className="px-6 py-2 rounded-md text-white text-sm border-none outline-none bg-blue-600 hover:bg-blue-700 active:bg-blue-600">Submit</button>
             </div>
           </div>
         </div>
