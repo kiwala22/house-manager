@@ -12,6 +12,7 @@ const UpdateRental: React.FC<UpdateRentalModalProps> = ({ rental, updateRental }
   const [startDate, setStartDate] = useState(rental.start_date);
   const [endDate, setEndDate] = useState(rental.end_date);
   const [deposit, setDeposit] = useState(rental.deposit);
+  const [active, setActive] = useState(rental.active);
 
   useEffect(() => {
     const getTenants = async () => {
@@ -50,6 +51,7 @@ const UpdateRental: React.FC<UpdateRentalModalProps> = ({ rental, updateRental }
           start_date: startDate,
           end_date: endDate,
           deposit,
+          active
         }
       });
       if (response.status === 200) {
@@ -161,6 +163,20 @@ const UpdateRental: React.FC<UpdateRentalModalProps> = ({ rental, updateRental }
                       placeholder="Deposit amount"
                       required
                     />
+                  </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <label htmlFor="active" className="text-sm font-medium text-gray-900 block mb-2">Active</label>
+                    <select
+                      required
+                      id="active"
+                      name="active"
+                      value={String(active)}  // Ensure the value is a string
+                      onChange={(e) => setActive(e.target.value === "true")}  // Convert back to boolean
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                      <option value="">Select Tenant Status</option>
+                      <option value="true">True</option>
+                      <option value="false">False</option>
+                    </select>
                   </div>
                 </div>
               </form>
