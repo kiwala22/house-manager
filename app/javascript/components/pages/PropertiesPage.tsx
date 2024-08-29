@@ -61,11 +61,18 @@ const Properties = () => {
 
   return (
     <div className="block p-6 rounded-lg bg-gray-100 dark:bg-gray-800">
-      <div className="overflow-x-auto">
-        <div className="flex justify-between items-center px-4 py-3 bg-white shadow-sm border-b border-gray-200">
-          <h1 className="text-lg font-semibold text-gray-900">Properties</h1>
-          <CreateRoom addProperty={addProperty} />
+      <div className="relative overflow-hidden sm:rounded-lg">
+        <div className="flex-row items-center justify-between p-4 space-y-3 sm:flex sm:space-y-0 sm:space-x-4">
+          <div>
+            <h5 className="mr-3 font-semibold dark:text-white">Properties</h5>
+            <p className="text-gray-500 dark:text-gray-400">Manage all your existing properties or add a new one</p>
+          </div>
+          <div>
+            <CreateRoom addProperty={addProperty}/>
+          </div>
         </div>
+      </div>
+      <div className="overflow-x-auto">
         <table className="min-w-full bg-white font-[sans-serif]">
           <thead className="whitespace-nowrap">
             <tr>
@@ -77,8 +84,8 @@ const Properties = () => {
             </tr>
           </thead>
           <tbody className="whitespace-nowrap">
-            {currentProperties.map(property => (
-              <tr className="odd:bg-blue-50">
+            {currentProperties.map((property) => (
+              <tr className="odd:bg-blue-50" key={property.id}>
                 <td className="px-6 py-4 text-sm">{property.roomNumber}</td>
                 <td className="px-6 py-4 text-sm">{property.branch}</td>
                 <td className="px-6 py-4 text-sm">Ugx {property.price}</td>
@@ -91,11 +98,8 @@ const Properties = () => {
                   <UpdateProperty property={property} updateProperty={updateProperty} />
                   <button onClick={() => deleteProperty(property.id)} className="mr-4" title="Delete">
                     <svg xmlns="http://www.w3.org/2000/svg" className="w-5 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
-                      <path
-                        d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
-                        data-original="#000000" />
-                      <path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
-                        data-original="#000000" />
+                      <path d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z" />
+                      <path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z" />
                     </svg>
                   </button>
                 </td>
@@ -103,23 +107,34 @@ const Properties = () => {
             ))}
           </tbody>
         </table>
-        <div className="md:flex mt-4 px-6">
-          <p className="text-sm text-gray-400 flex-1">Showing {indexOfFirstProperty + 1} to {Math.min(indexOfLastProperty, properties.length)} of {properties.length} properties</p>
-          <div className="flex items-center max-md:mt-4">
-            <p className="text-sm text-gray-400">Display</p>
-            <select className="text-sm text-gray-400 border border-gray-400 rounded h-7 mx-4 outline-none" value={propertiesPerPage} onChange={(e) => setPropertiesPerPage(Number(e.target.value))}>
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-            </select>
-            <div className="border flex rounded divide-x-2">
-              <button type="button" className="px-4 py-2 hover:bg-gray-200 text-sm" onClick={handlePrevious}>Previous</button>
-              <button type="button" className="px-4 py-2 hover:bg-gray-200 text-sm" onClick={handleNext}>Next</button>
-            </div>
+      </div>
+      <div className="md:flex mt-4 px-6">
+        <p className="text-sm text-gray-400 flex-1">
+          Showing {indexOfFirstProperty + 1} to {Math.min(indexOfLastProperty, properties.length)} of {properties.length} properties
+        </p>
+        <div className="flex items-center max-md:mt-4">
+          <p className="text-sm text-gray-400">Display</p>
+          <select
+            className="text-sm text-gray-400 border border-gray-400 rounded h-7 mx-4 outline-none"
+            value={propertiesPerPage}
+            onChange={(e) => setPropertiesPerPage(Number(e.target.value))}
+          >
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+          </select>
+          <div className="border flex rounded divide-x-2">
+            <button type="button" className="px-4 py-2 hover:bg-gray-200 text-sm" onClick={handlePrevious}>
+              Previous
+            </button>
+            <button type="button" className="px-4 py-2 hover:bg-gray-200 text-sm" onClick={handleNext}>
+              Next
+            </button>
           </div>
         </div>
       </div>
-    </div >
+    </div>
+
   );
 }
 

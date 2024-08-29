@@ -11,7 +11,6 @@ class PropertiesController < ApplicationController
 
   # GET /properties/1 or /properties/1.json
   def show
-    # @property = Property.includes(:rentals).find(params[:id])
     @current_rental = @property.current_rental_with_tenant
   end
 
