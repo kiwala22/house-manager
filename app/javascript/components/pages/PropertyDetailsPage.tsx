@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Property, RouteParams } from '@components/Types';
 import LoadingIndicator from '@components/LoadingIndicator';
 import { getPropertyById } from '@components/Api';
+import axiosInstance from '@components/Api/axiosInstance.tsaxiosInstance';
 
 const RentalDetails = () => {
   const { propertyId } = useParams<RouteParams>();
@@ -27,20 +28,43 @@ const RentalDetails = () => {
 
   const rental = property.rental;
 
+  // Function to handle checkout
+  const handleCheckout = async () => {
+    if (!rental) return;
+
+    try {
+      // Mark rental as inactive
+      await axiosInstance.patch(`/properties/${propertyId}/rentals/${rental.id}`, { active: false });
+
+      // Update the state of property
+      if (propertyId) {
+        const fetchedProperty: Property = await getPropertyById(parseInt(propertyId));
+        setProperty(fetchedProperty);
+      }
+    } catch (error) {
+      console.error('Error checking out tenant:', error);
+    }
+  };
+
   return (
     <div className="block p-6 rounded-lg bg-gray-100 dark:bg-gray-800">
-      <div className="font-sans overflow-x-auto">
-        <div className="flex flex-wrap justify-between items-center px-4 py-3 bg-white shadow-sm border-b border-gray-200">
-          <h1 className="text-base font-medium text-gray-900">Room# {property.roomNumber}</h1>
-          <h1 className="text-base font-medium text-gray-900">Room-branch: {property.branch}</h1>
-          <h1 className="text-base font-medium text-gray-900">Room-status: {property.status}</h1>
+      <div className="flex flex-wrap justify-between items-center px-4 py-3 bg-white shadow-sm border-b border-gray-200">
+        <h1 className="text-base font-medium text-gray-900">Room# {property.roomNumber}</h1>
+        <h1 className="text-base font-medium text-gray-900">Room-branch: {property.branch}</h1>
+        <h1 className="text-base font-medium text-gray-900">Room-status: {property.status}</h1>
+
+        {rental?.active && (
           <button
             type="button"
             className="px-3 py-1.5 mt-2 md:mt-0 rounded-lg text-white text-sm tracking-wider font-medium border border-current outline-none bg-blue-700 hover:bg-blue-800 active:bg-blue-700"
+            onClick={handleCheckout}
           >
-            Check In
+            Check Out
           </button>
-        </div>
+        )}
+      </div>
+      <div className="font-sans overflow-x-auto">
+
         <table className="min-w-full bg-white mt-4">
           <thead className="whitespace-nowrap">
             <tr>

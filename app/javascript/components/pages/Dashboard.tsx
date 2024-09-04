@@ -72,7 +72,7 @@ const Dashboard = () => {
                             .filter(property => branchFilter === '' || property.branch === branchFilter)
                             .map((property) => (
                                 <div
-                                    onDoubleClick={() => navigate(`/details/${property.id}`)}
+                                    onClick={() => navigate(`/details/${property.id}`)}
                                     key={property.id}
                                     className={`flex flex-col items-center justify-center cursor-pointer h-24 rounded ${property.status === 'occupied' ? 'bg-red-500 dark:bg-red-800' : 'bg-green-500 dark:bg-green-800'} space-y-1`}>
                                     <p className="text-base font-medium text-center text-white">
